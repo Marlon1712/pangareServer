@@ -1,0 +1,11 @@
+
+# dependencies
+/tesseract
+/venv
+/data/*
+/logs/*
+
+
+# vscode
+.vscode
+

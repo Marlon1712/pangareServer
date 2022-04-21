@@ -1,0 +1,5 @@
+setup.py
+pangareServer.egg-info/PKG-INFO
+pangareServer.egg-info/SOURCES.txt
+pangareServer.egg-info/dependency_links.txt
+pangareServer.egg-info/top_level.txt

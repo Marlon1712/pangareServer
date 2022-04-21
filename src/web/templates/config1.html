@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .chat {
+            display: flex;
+            flex-direction: column;
+            margin-top: 50px;
+            margin-left: 50px;
+        }
+        .chat span {
+            margin-bottom: 10px;
+        }
+        form {
+            margin-top: 10px;
+            margin-left: 50px;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename= 'css/index.css') }}" media="screen" />
+    <script src="../static/js/scripts1.js"></script>
+    <script src="../static/js/socket.io.js"></script>
+</head>
+<body>
+    <h1>Bem Vindo ao Servidor do Pangare</h1>
+    <div class="chat"></div>
+    <div>
+        <form>
+            <input type="text" placeholder="insira seu nome">
+            <input type="text" placeholder="insira sua mensagem">
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+</body>
+</html>
