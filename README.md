@@ -4,7 +4,7 @@ O projeto tem como objetivo possibilitar coleta de dados dos inspetores eletroni
 
 ## Installation
 
-Para iniciar instalação execute o comando pip conforme abaixo para instalar requisitos necessarios.
+Para iniciar instalação execute o comando [pip](https://pip.pypa.io/en/stable/) conforme abaixo para instalar requisitos necessarios.
 
 ```bash
 pip install -r requirements.txt
