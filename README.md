@@ -1,10 +1,10 @@
 # pangareServer
 
-Foobar is a Python library for dealing with word pluralization.
+O projeto tem como objetivo possibilitar coleta de dados dos inspetores eletronicos das linhas de envase na industria Cervejeira.
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
+Para iniciar instalação execute o comando pip conforme abaixo para instalar requisitos necessarios.
 
 ```bash
 pip install -r requirements.txt
