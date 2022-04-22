@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from services.escritaDados import escreveSQL, printaResultados  # escreveIGS
-from utils.bcolors import BColors as Bc
+from utils.bcolors import info, succes, warging
 
 from .predicaoRf import carregaModelo, predicao
 
@@ -42,7 +42,7 @@ def resultadoFinal(
     ]
     resultadosFinais = [int(x) for x in resultadosFinais]
 
-    Bc.succes("[INFO] Predição dos dados realizada!")
+    succes("[INFO] Predição dos dados realizada!")
 
     # variaveis de data e hora
     DataHora = datetime.now()
@@ -111,9 +111,9 @@ def resultadoFinal(
         garrafasProcessadasUltimoTeste,
     ]
 
-    Bc.warging("=" * 50)
+    warging("=" * 50)
     printaResultados(colunasSQL, valoresPredicao)
-    Bc.warging("=" * 50)
+    warging("=" * 50)
 
     # Escrevendo dados no IGS
     # escreveIGS(valoresPredicao)
@@ -124,8 +124,8 @@ def resultadoFinal(
     escreveSQL(colunasSQL, valoresPredicao)
 
     # Finalizando programa
-    Bc.succes("[INFO] Programa finalizado!")
-    Bc.info("-" * 50)
+    succes("[INFO] Programa finalizado!")
+    info("-" * 50)
 
 
 def numerosOitoCaixas(caminhoImagemProcessada, modelo):

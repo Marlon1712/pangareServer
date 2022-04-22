@@ -2,7 +2,7 @@ import os
 
 import pyautogui
 
-from .bcolors import BColors as Bc
+from .bcolors import error, succes
 
 
 def captura(caminho_print: str):
@@ -20,6 +20,6 @@ def captura(caminho_print: str):
             pyautogui.screenshot(caminho_print)
             x += 1
 
-        Bc.succes("[INFO] IMAGEM capturada!")
+        succes("[INFO] IMAGEM capturada!")
     except BaseException as err:
-        Bc.error(f"[ERROR] Unexpected {err=}, {type(err)=}")
+        error(f"[ERROR] Unexpected {err=}, {type(err)=}")

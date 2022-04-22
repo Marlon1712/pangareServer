@@ -3,7 +3,7 @@ import os
 
 import pyautogui
 
-from utils.bcolors import BColors as Bc
+from .bcolors import info, warging
 
 pyautogui.PAUSE = 0.5
 pyautogui.FAILSAFE = False
@@ -33,7 +33,7 @@ def verificaTela(image):
             return False
     except BaseException as err:
         logging.error(f"[ERRO]{err}")
-        Bc.warging(f"[WARN] {err=}")
+        warging(f"[WARN] {err=}")
         raise
 
 
@@ -56,7 +56,7 @@ def voltar():
                     raise Exception("Tecla voltar nao localizada!")
     except BaseException as err:
         logging.error(err)
-        Bc.warging(f"[WARN] {err=}")
+        warging(f"[WARN] {err=}")
         raise
 
 
@@ -71,11 +71,11 @@ def popup():
 
     except BaseException as err:
         logging.error(f"[WARN] {err}")
-        Bc.warging(f"[WARN] {err}")
+        warging(f"[WARN] {err}")
         raise
 
 
-def info():
+def tela_info():
     """Clica na tecla para abrir tela info
 
     Raises:
@@ -88,7 +88,7 @@ def info():
             raise Exception("Tela info nao localizada!")
     except BaseException as err:
         logging.error(f"[WARN] {err}")
-        Bc.warging(f"[WARN] {err}")
+        warging(f"[WARN] {err}")
         raise
 
 
@@ -105,11 +105,11 @@ def contador():
             raise Exception("Tela contador nao localizada!")
     except BaseException as err:
         logging.error(f"[ERROR] {err}")
-        Bc.warging(f"[WARN] {err}")
+        warging(f"[WARN] {err}")
         raise
 
 
-def gteste(func):
+def gteste():
     """Abre tela de teste de garrafas e executa a funcao
 
 
@@ -129,7 +129,7 @@ def gteste(func):
 
     except BaseException as err:
         logging.error(f"[ERRO] {err}")
-        Bc.warging(f"[WARN] Erro ao obter resultado garrafa teste {err}")
+        warging(f"[WARN] Erro ao obter resultado garrafa teste {err}")
         raise
 
 
@@ -156,7 +156,7 @@ def uip(user, passw):
     try:
         if pyautogui.locateOnScreen(tecla_selct_uip):
             pyautogui.doubleClick(tecla_selct_uip)
-            Bc.info("[INFO] Tela da UIP aberta com sucesso!")
+            info("[INFO] Tela da UIP aberta com sucesso!")
 
             for _ in range(3):  # Clicando na porta para ter acesso ao login
 
@@ -180,5 +180,5 @@ def uip(user, passw):
             raise Exception("Tela UIP nao localizada!")
     except BaseException as err:
         logging.error(f"[ERRO] {err}")
-        Bc.warging(f"[WARN] {err}")
+        warging(f"[WARN] {err}")
         os.system("taskkill /im javaw.exe")

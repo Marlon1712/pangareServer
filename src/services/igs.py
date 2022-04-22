@@ -1,6 +1,7 @@
 import logging
 
 from opcua import Client, ua
+from utils.bcolors import error
 
 
 class IGS:
@@ -107,7 +108,7 @@ class IGS:
 
             tag.set_value(var_w)
         except BaseException as err:
-            print(f"Erro ao escrever no IGS {err}")
+            error(f"Erro ao escrever no IGS {err}")
             logging.error(f"Erro ao escrever no IGS {err}")
             return err
         finally:

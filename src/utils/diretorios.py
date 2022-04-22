@@ -1,7 +1,7 @@
 import os
 import os.path
 
-from .bcolors import BColors as Bc
+from .bcolors import info
 
 
 def criaDiretorio(caminhoImagemProcessada):
@@ -11,9 +11,9 @@ def criaDiretorio(caminhoImagemProcessada):
     try:
         os.mkdir(caminhoImagemProcessada)
     except FileExistsError:
-        Bc.info(f"[INFO] Pasta: {caminhoImagemProcessada} existe!")
+        info(f"[INFO] Pasta: {caminhoImagemProcessada} existe!")
         quantidadeArquivos = len(os.listdir(caminhoImagemProcessada))
-        Bc.info(f"[INFO] Numero de arquivos na pasta: {str(quantidadeArquivos)}")
+        info(f"[INFO] Numero de arquivos na pasta: {str(quantidadeArquivos)}")
 
 
 def removeArquivos(caminhoImagemProcessada):

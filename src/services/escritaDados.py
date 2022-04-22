@@ -1,4 +1,4 @@
-from utils.bcolors import BColors as Bc
+from utils.bcolors import error, succes
 
 from .banco import Banco
 from .igs import IGS
@@ -65,10 +65,10 @@ def escreveSQL(prefixo, listaResultados):
 
     try:
         banco.insert(inputDicionario)
-        Bc.succes("[INFO] Dados escritos na tabela do SQLite!")
+        succes("[INFO] Dados escritos na tabela do SQLite!")
     except BaseException as err:
-        Bc.error(f"Unexpected {err=}, {type(err)=}")
-        Bc.error("[ERRO] Falha ao salvar no banco")
+        error(f"Unexpected {err=}, {type(err)=}")
+        error("[ERRO] Falha ao salvar no banco")
 
 
 uip = IGS()
@@ -120,7 +120,7 @@ def escreveIGS(resultados):
         resultados[7],
     )
 
-    Bc.succes("[INFO] Dados enviados para o Servidor IGS!")
+    succes("[INFO] Dados enviados para o Servidor IGS!")
 
 
 def printaResultados(prefixo, listaResultados):

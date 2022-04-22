@@ -4,7 +4,8 @@ import pickle
 import imutils
 from cv2 import cv2
 from imutils import contours, paths
-from visao.preprocessamentoImagem import Loader, SimplePreprocessor
+
+from .preprocessamentoImagem import Loader, SimplePreprocessor
 
 
 def detectaVerificacaoTestes(caminhoPrintTeste):

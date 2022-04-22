@@ -7,14 +7,12 @@ import pyautogui
 from predicao.resultados import resultadoFinal
 from predicao.tratativaPrintOriginal import tratar
 from predicao.verificaGarrafaTeste import detectaVerificacaoTestes
-from utils.bcolors import BColors as Bc
-from utils.navega import contador, gteste, info, popup, uip, verificaTela
+from utils.bcolors import info, succes, warging
+from utils.navega import contador, gteste, popup, tela_info, uip, verificaTela
 from utils.printaTela import captura
 
 pyautogui.PAUSE = 0.5
 pyautogui.FAILSAFE = False
-
-passw = ["7", "5", "1", "1"]
 
 # Diretorios:
 path_atividadeFaltante = "./src/img/grfTeste/atividadeFaltando.png"
@@ -23,6 +21,11 @@ path_imagemOriginal = "./src/img/contadores/contadores.jpg"
 path_imagemGTeste = "./src/img/grfTeste/grfTeste.png"
 path_Modelo = "./src/models/modelo_rf.pkl"
 path_namelog = "./logs/Erros.log"
+
+# Comandos
+tecla_uip = "./src/img/comands/Comand_inline.png"
+tecla_login = "./src/img/comands/Comand_loginITF.png"
+passw = ["7", "5", "1", "1"]
 
 logging.basicConfig(
     filename=path_namelog,
@@ -52,7 +55,7 @@ def predicaoGT():
     dicionarioAtividadesFaltantes = dict(enumerate(pyautogui.locateAllOnScreen(path_atividadeFaltante)))
     todasAtividadesFaltantes = {}
     if len(dicionarioAtividadesFaltantes) == 0:
-        Bc.info("[INFO] Todas as atividades de garrafas teste foram realizadas")
+        info("[INFO] Todas as atividades de garrafas teste foram realizadas")
         for keyBanco, _ in dicionarioAtividadesGarrafasTeste.items():
             todasAtividadesFaltantes[keyBanco] = 1
     else:
@@ -67,8 +70,8 @@ def predicaoGT():
             else:
                 todasAtividadesFaltantes[keyBanco] = 1
 
-    Bc.succes("[INFO] IMAGEM Garrafa teste capturada!")
-    info()
+    succes("[INFO] IMAGEM Garrafa teste capturada!")
+    tela_info()
     (
         datagt,
         horagt,
@@ -76,7 +79,7 @@ def predicaoGT():
     ) = detectaVerificacaoTestes(path_imagemGTeste)
 
     dataHoraGarrafaTeste = f"20{datagt[-2:]}-{datagt[-4:-2]}-{datagt[:-4]} {horagt[:2]}:{horagt[2:4]}:00.000"
-    Bc.succes("[INFO] Prevendo os resultados e escrevendo nos bancos de dados !")
+    succes("[INFO] Prevendo os resultados e escrevendo nos bancos de dados !")
     resultadoFinal(
         path_ImagemProcessada,
         path_Modelo,
@@ -92,43 +95,43 @@ def coleta():
         os.system("cls" if os.name == "nt" else "clear")
 
         if os.system(os_cmd) != 0:
-            Bc.info("[INFO] Abrindo Pilot !")
+            info("[INFO] Abrindo Pilot !")
             pyautogui.hotkey("win", "1")
             time.sleep(5)
 
-            uip()
-
+            tela_info()
+            popup()
             contador()
-            Bc.info("[INFO] Capturando a tela para predição numérica!")
+            info("[INFO] Capturando a tela para predição numérica!")
             captura(path_imagemOriginal)
-            Bc.info("[INFO] Realizando as tratativas e recortes na imagem original!")
+            info("[INFO] Realizando as tratativas e recortes na imagem original!")
             tratar(path_ImagemProcessada, path_imagemOriginal)
             gteste()
         else:
-            Bc.info("[INFO] Programa esta Aberto!")
-            if verificaTela("./src/img/comands/Comand_inline.png") is True:
-                uip("./src/img/comands/Comand_loginITF.png", passw)
+            info("[INFO] Programa esta Aberto!")
+            if verificaTela(tecla_uip) is True:
+                uip(tecla_login, passw)
                 popup()
                 contador()
-                Bc.info("[INFO] Capturando a tela para predição numérica!")
+                info("[INFO] Capturando a tela para predição numérica!")
                 captura(path_imagemOriginal)
-                Bc.info("[INFO] Realizando as tratativas e recortes na imagem original!")
+                info("[INFO] Realizando as tratativas e recortes na imagem original!")
                 tratar(path_ImagemProcessada, path_imagemOriginal)
                 gteste()
                 predicaoGT()
             else:
-                info()
+                tela_info()
                 popup()
                 contador()
-                Bc.info("[INFO] Capturando a tela para predição numérica!")
+                info("[INFO] Capturando a tela para predição numérica!")
                 captura(path_imagemOriginal)
-                Bc.info("[INFO] Realizando as tratativas e recortes na imagem original!")
+                info("[INFO] Realizando as tratativas e recortes na imagem original!")
                 tratar(path_ImagemProcessada, path_imagemOriginal)
                 gteste()
                 predicaoGT()
     except BaseException as err:
         logging.error(f"[ERRO] {err}")
         os.system("taskkill /im javaw.exe")
-        Bc.warging(f"[WARN] Erro ao iniciar rotina {err}")
-        Bc.info("[INFO] Pilot foi fechado!")
+        warging(f"[WARN] Erro ao iniciar rotina {err}")
+        info("[INFO] Pilot foi fechado!")
         raise
