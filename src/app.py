@@ -8,7 +8,7 @@ from predicao.resultados import resultadoFinal
 from predicao.tratativaPrintOriginal import tratar
 from predicao.verificaGarrafaTeste import detectaVerificacaoTestes
 from utils.bcolors import info, succes, warging
-from utils.navega import contador, gteste, popup, tela_info, uip, verificaTela
+from utils.navega import contador, gteste, login_uip, popup, tela_info, uip, verificaTela
 from utils.printaTela import captura
 
 pyautogui.PAUSE = 0.5
@@ -99,6 +99,8 @@ def coleta():
             pyautogui.hotkey("win", "1")
             time.sleep(5)
 
+            uip()
+            login_uip(tecla_login, passw)
             tela_info()
             popup()
             contador()
@@ -110,7 +112,8 @@ def coleta():
         else:
             info("[INFO] Programa esta Aberto!")
             if verificaTela(tecla_uip) is True:
-                uip(tecla_login, passw)
+                uip()
+                login_uip(tecla_login, passw)
                 popup()
                 contador()
                 info("[INFO] Capturando a tela para predição numérica!")
@@ -129,6 +132,7 @@ def coleta():
                 tratar(path_ImagemProcessada, path_imagemOriginal)
                 gteste()
                 predicaoGT()
+                tela_info()
     except BaseException as err:
         logging.error(f"[ERRO] {err}")
         os.system("taskkill /im javaw.exe")

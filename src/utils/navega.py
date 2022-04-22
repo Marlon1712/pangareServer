@@ -143,7 +143,28 @@ def login(user: str, passw: list):
         raise Exception("Tecla login ITF nao localizada!")
 
 
-def uip(user, passw):
+def login_uip(user, passw):
+    for i in range(4):  # Clicando na porta para ter acesso ao login
+
+        if pyautogui.locateOnScreen(tecla_login):
+            pyautogui.click(tecla_login)
+            login(user, passw)
+            break
+        else:
+            if pyautogui.locateOnScreen(tecla_login1):
+                pyautogui.click(tecla_login1)
+                login(user, passw)
+                break
+            else:
+                if pyautogui.locateOnScreen(tecla_login2):
+                    pyautogui.click(tecla_login2)
+                    login(user, passw)
+                    break
+        if i > 3:
+            raise Exception("Tecla login nao localizada!")
+
+
+def uip():
     """Clica na tecla para abrir tela do inspetor e executa o login
 
     Args:
@@ -157,25 +178,6 @@ def uip(user, passw):
         if pyautogui.locateOnScreen(tecla_selct_uip):
             pyautogui.doubleClick(tecla_selct_uip)
             info("[INFO] Tela da UIP aberta com sucesso!")
-
-            for _ in range(3):  # Clicando na porta para ter acesso ao login
-
-                if pyautogui.locateOnScreen(tecla_login):
-                    pyautogui.click(tecla_login)
-                    login(user, passw)
-                    break
-                else:
-                    if pyautogui.locateOnScreen(tecla_login1):
-                        pyautogui.click(tecla_login1)
-                        login(user, passw)
-                        break
-                    else:
-                        if pyautogui.locateOnScreen(tecla_login2):
-                            pyautogui.click(tecla_login2)
-                            login(user, passw)
-                            break
-                        else:
-                            raise Exception("Tecla login nao localizada!")
         else:
             raise Exception("Tela UIP nao localizada!")
     except BaseException as err:
