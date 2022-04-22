@@ -2,7 +2,7 @@ import sched
 import threading
 import time
 
-from src.index import coleta
+from src.app import coleta
 
 
 def repeat_at_interval(scheduler, event, interval=60, add_n=10, start_t=None):
