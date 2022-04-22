@@ -9,9 +9,9 @@ pyautogui.PAUSE = 0.5
 pyautogui.FAILSAFE = False
 
 # diretorio comandos
-tecla_voltar = "./src/comands/Comand_voltar.png"
-tecla_voltar1 = "./src/comands/Comand_voltar1.png"
-tecla_voltar2 = "./src/comands/Comand_voltar2.png"
+tecla_voltar = "./src/img/comands/Comand_voltar.png"
+tecla_voltar1 = "./src/img/comands/Comand_voltar1.png"
+tecla_voltar2 = "./src/img/comands/Comand_voltar2.png"
 
 
 def verificaTela(image):
@@ -52,11 +52,11 @@ def voltar():
 def popup():
     """Clica na tecla para fechar popup"""
     try:
-        if pyautogui.locateOnScreen("./src/comands/Comand_msg.png"):
-            pyautogui.click("./src/comands/Comand_msg.png")
+        if pyautogui.locateOnScreen("./src/img/comands/Comand_msg.png"):
+            pyautogui.click("./src/img/comands/Comand_msg.png")
         else:
-            if pyautogui.locateOnScreen("./src/comands/Comand_msg1.png"):
-                pyautogui.click("./src/comands/Comand_msg1.png")
+            if pyautogui.locateOnScreen("./src/img/comands/Comand_msg1.png"):
+                pyautogui.click("./src/img/comands/Comand_msg1.png")
 
     except BaseException as err:
         logging.error(f"[WARN] {err}")
@@ -71,8 +71,8 @@ def info():
         Exception: Retorna uma exceção caso não encontre a imagem da tecla
     """
     try:
-        if pyautogui.locateOnScreen("./src/comands/Comand_info1.png"):
-            pyautogui.click("./src/comands/Comand_info1.png")
+        if pyautogui.locateOnScreen("./src/img/comands/Comand_info1.png"):
+            pyautogui.click("./src/img/comands/Comand_info1.png")
         else:
             raise Exception("Tela info nao localizada!")
     except BaseException as err:
@@ -88,8 +88,8 @@ def contador():
         Exception: Retorna uma exceção caso não encontre a imagem da tecla
     """
     try:
-        if pyautogui.locateOnScreen("./src/comands/Comand_tela_contador.png"):
-            pyautogui.click("./src/comands/Comand_tela_contador.png")
+        if pyautogui.locateOnScreen("./src/img/comands/Comand_tela_contador.png"):
+            pyautogui.click("./src/img/comands/Comand_tela_contador.png")
         else:
             raise Exception("Tela contador nao localizada!")
     except BaseException as err:
@@ -107,10 +107,10 @@ def gteste(func):
         Exception: Retorna uma exceção caso nao encntre tecla historico garrafa teste
     """
     try:
-        if pyautogui.locateOnScreen("./src/comands/Comand_tela_garafa_teste.png"):
-            pyautogui.click("./src/comands/Comand_tela_garafa_teste.png")
-            if pyautogui.locateOnScreen("./src/comands/Comand_tela_garafa_teste1.png"):
-                pyautogui.click("./src/comands/Comand_tela_garafa_teste1.png")
+        if pyautogui.locateOnScreen("./src/img/comands/Comand_tela_garafa_teste.png"):
+            pyautogui.click("./src/img/comands/Comand_tela_garafa_teste.png")
+            if pyautogui.locateOnScreen("./src/img/comands/Comand_tela_garafa_teste1.png"):
+                pyautogui.click("./src/img/comands/Comand_tela_garafa_teste1.png")
             else:
                 raise Exception("Tela historico garrafa teste nao localizada!")
         else:
@@ -136,7 +136,7 @@ def uip(user, passw):
     """Clica na tecla para abrir tela do inspetor e executa o login
 
     Args:
-        user (str): "./src/comands/Comand_loginITF.png"
+        user (str): "./src/img/comands/Comand_loginITF.png"
         passw (list): ["7", "5", "1", "1"]
 
     Raises:
@@ -145,24 +145,24 @@ def uip(user, passw):
         Exception: _description_
     """
     try:
-        if pyautogui.locateOnScreen("./src/comands/Comand_inline.png"):
-            pyautogui.doubleClick("./src/comands/Comand_inline.png")
+        if pyautogui.locateOnScreen("./src/img/comands/Comand_inline.png"):
+            pyautogui.doubleClick("./src/img/comands/Comand_inline.png")
             Bc.info("[INFO] Tela da UIP aberta com sucesso!")
 
             for _ in range(3):  # Clicando na porta para ter acesso ao login
 
-                if pyautogui.locateOnScreen("./src/comands/Comand_login.png"):
-                    pyautogui.click("./src/comands/Comand_login.png")
+                if pyautogui.locateOnScreen("./src/img/comands/Comand_login.png"):
+                    pyautogui.click("./src/img/comands/Comand_login.png")
                     login(user, passw)
                     break
                 else:
-                    if pyautogui.locateOnScreen("./src/comands/Comand_login1.png"):
-                        pyautogui.click("./src/comands/Comand_login1.png")
+                    if pyautogui.locateOnScreen("./src/img/comands/Comand_login1.png"):
+                        pyautogui.click("./src/img/comands/Comand_login1.png")
                         login(user, passw)
                         break
                     else:
-                        if pyautogui.locateOnScreen("./src/comands/Comand_login2.png"):
-                            pyautogui.click("./src/comands/Comand_login2.png")
+                        if pyautogui.locateOnScreen("./src/img/comands/Comand_login2.png"):
+                            pyautogui.click("./src/img/comands/Comand_login2.png")
                             login(user, passw)
                             break
                         else:

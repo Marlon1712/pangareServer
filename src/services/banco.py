@@ -2,14 +2,10 @@ import sqlite3
 
 
 class Banco:
+    """Classe para manipulacao de banco de dados com SQLite"""
+
     def __init__(self, db_path: str, tabela: str):
-        """_summary_
-
-        Args:
-            db_path (str): String com caminho do banco de dados SQLite
-            tabela (str): Nome da tabela a ser utilizada ou criada
-        """
-
+        """Metodo construtor da classe Banco"""
         self._db_path = db_path
         self._tabela = tabela
         self._schema = {}
@@ -98,7 +94,15 @@ class Banco:
             print(f"Erro acesso ao banco {err}")
             raise
 
-    def listar(self, lista: list) -> list:
+    def listar(self, lista: list[str]) -> tuple:
+        """Metodo para listar registros da tabela
+
+        Args:
+            lista (list[str]): Parametro contendo os campos a serem listados
+
+        Returns:
+            tuple: Retorna uma tupla com duas listas no formato (colunas,valores)
+        """
         colunas = []
         try:
             query = f"SELECT * FROM {self._tabela}"
@@ -116,25 +120,14 @@ class Banco:
             print(f"Erro acesso ao banco {err}")
             raise
 
-    def update(self, config: dict, **filtro):
-
-        """param config: dicioanario {'parametro' : valor} para atualizar
-        param filtro: filtro para campo a ser atualizado (parametro = valor)
-        """
+    def update(self, id: int, config: dict):
 
         try:
-            if filtro:
-                if len(filtro) == 1:
-                    for coluna, registro in filtro.items():
-                        for parametro, valor in config.items():
-                            query = f"""
-                                    UPDATE {self._tabela}
-                                    SET {parametro} = {valor}
-                                    WHERE {coluna} = {registro}"""
-                            self._cursor.execute(query)
-                            self._conexao.commit()
-                else:
-                    raise Exception("Filtro deve conter apenas um campo")
+            if config is not None:
+                for parametro, valor in config.items():
+                    query = f"""UPDATE {self._tabela} SET {parametro} = {valor} WHERE id = {id}"""
+                    self._cursor.execute(query)
+                    self._conexao.commit()
             else:
                 raise Exception("Filtro não informado")
         except BaseException as err:

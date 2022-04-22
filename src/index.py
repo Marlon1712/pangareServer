@@ -4,15 +4,12 @@ import time
 
 import pyautogui
 
+from predicao.resultados import resultadoFinal
+from predicao.tratativaPrintOriginal import tratar
+from predicao.verificaGarrafaTeste import detectaVerificacaoTestes
 from utils.bcolors import BColors as Bc
 from utils.navega import contador, gteste, info, popup, uip, verificaTela
 from utils.printaTela import captura
-from visao.resultados import resultadoFinal
-from visao.tratativaPrintOriginal import tratar
-from visao.verificaGarrafaTeste import detectaVerificacaoTestes
-
-# ---------------Importações para preditiva numérica de rejeição---------------#
-
 
 pyautogui.PAUSE = 0.5
 pyautogui.FAILSAFE = False
@@ -20,45 +17,43 @@ pyautogui.FAILSAFE = False
 passw = ["7", "5", "1", "1"]
 
 # Diretorios:
-caminhoImagemProcessada = "./src/img/ImgProcess/"
-imagemOriginal = "./src/img/Print/print.jpg"
-imagemGTeste = "./src/img/printGrfTeste.png"
-nomeArquivo = "./src/csv/inline.csv"
-caminhoHistorico = "./src/img/Historico/"
-caminhoModelo = "./src/models/modelo_rf.pkl"
-namelog = "./src/logs/Erros.log"
+path_atividadeFaltante = "./src/img/garrafasTeste/atividadeFaltando.png"
+path_ImagemProcessada = "./src/img/ImgProcess/"
+path_imagemOriginal = "./src/img/Print/print.jpg"
+path_imagemGTeste = "./src/img/Print/printGrfTeste.png"
+path_Modelo = "./src/models/modelo_rf.pkl"
+path_namelog = "./logs/Erros.log"
 
 logging.basicConfig(
-    filename=namelog,
+    filename=path_namelog,
     encoding="utf8",
     level=logging.ERROR,
     format="%(asctime)s file: %(filename)s line: %(lineno)d %(levelname)s -> %(message)s",
     datefmt="%Y-%m-%d %I:%M %p",
 )
 
+dicionarioAtividadesGarrafasTeste = {
+    "Garrafas_de_Teste": [579, 83, 23, 28],
+    "Controlador_do_Fundo": [579, 115, 23, 28],
+    "Cont_Fundo_Erro_Transp": [579, 147, 23, 28],
+    "Paredes_laterais_entrada": [579, 179, 23, 28],
+    "Paredes_laterais_saida": [579, 211, 23, 28],
+    "Controlad_Embocadura": [579, 243, 23, 28],
+    "Liquido_residual_HF_1": [579, 275, 23, 28],
+    "Liquido_residual_HF_2": [579, 307, 23, 28],
+    "Liquido_residual_IR": [579, 339, 23, 28],
+    "Cor_recipiente_incorreta": [579, 371, 23, 28],
+    "Controlo_ext1_entrada": [579, 403, 23, 28],
+}
+
 
 def predicaoGT():
-    dicionarioAtividadesGarrafasTesteUIP1 = {
-        "Garrafas_de_Teste": [579, 83, 23, 28],
-        "Controlador_do_Fundo": [579, 115, 23, 28],
-        "Cont_Fundo_Erro_Transp": [579, 147, 23, 28],
-        "Paredes_laterais_entrada": [579, 179, 23, 28],
-        "Paredes_laterais_saida": [579, 211, 23, 28],
-        "Controlad_Embocadura": [579, 243, 23, 28],
-        "Liquido_residual_HF_1": [579, 275, 23, 28],
-        "Liquido_residual_HF_2": [579, 307, 23, 28],
-        "Liquido_residual_IR": [579, 339, 23, 28],
-        "Cor_recipiente_incorreta": [579, 371, 23, 28],
-        "Controlo_ext1_entrada": [579, 403, 23, 28],
-    }
-    captura(imagemGTeste)
-    dicionarioAtividadesFaltantes = dict(
-        enumerate(pyautogui.locateAllOnScreen("./src/img/garrafasTeste/atividadeFaltando.png"))
-    )
+    captura(path_imagemGTeste)
+    dicionarioAtividadesFaltantes = dict(enumerate(pyautogui.locateAllOnScreen(path_atividadeFaltante)))
     todasAtividadesFaltantes = {}
     if len(dicionarioAtividadesFaltantes) == 0:
         Bc.info("[INFO] Todas as atividades de garrafas teste foram realizadas")
-        for keyBanco, _ in dicionarioAtividadesGarrafasTesteUIP1.items():
+        for keyBanco, _ in dicionarioAtividadesGarrafasTeste.items():
             todasAtividadesFaltantes[keyBanco] = 1
     else:
         for key, value in dicionarioAtividadesFaltantes.items():
@@ -66,7 +61,7 @@ def predicaoGT():
         for (
             keyBanco,
             valueBanco,
-        ) in dicionarioAtividadesGarrafasTesteUIP1.items():
+        ) in dicionarioAtividadesGarrafasTeste.items():
             if list(valueBanco) in dicionarioAtividadesFaltantes.values():
                 todasAtividadesFaltantes[keyBanco] = 0
             else:
@@ -78,13 +73,13 @@ def predicaoGT():
         datagt,
         horagt,
         garrafasProcessadasUltimoTeste,
-    ) = detectaVerificacaoTestes("./src/img/printGrfTeste.png")
+    ) = detectaVerificacaoTestes(path_imagemGTeste)
 
     dataHoraGarrafaTeste = f"20{datagt[-2:]}-{datagt[-4:-2]}-{datagt[:-4]} {horagt[:2]}:{horagt[2:4]}:00.000"
     Bc.succes("[INFO] Prevendo os resultados e escrevendo nos bancos de dados !")
     resultadoFinal(
-        caminhoImagemProcessada,
-        caminhoModelo,
+        path_ImagemProcessada,
+        path_Modelo,
         dataHoraGarrafaTeste,
         garrafasProcessadasUltimoTeste,
         todasAtividadesFaltantes,
@@ -105,20 +100,20 @@ def coleta():
 
             contador()
             Bc.info("[INFO] Capturando a tela para predição numérica!")
-            captura(imagemOriginal)
+            captura(path_imagemOriginal)
             Bc.info("[INFO] Realizando as tratativas e recortes na imagem original!")
-            tratar(caminhoImagemProcessada, imagemOriginal)
+            tratar(path_ImagemProcessada, path_imagemOriginal)
             gteste()
         else:
             Bc.info("[INFO] Programa esta Aberto!")
-            if verificaTela("./src/comands/Comand_inline.png") is True:
-                uip("./src/comands/Comand_loginITF.png", passw)
+            if verificaTela("./src/img/comands/Comand_inline.png") is True:
+                uip("./src/img/comands/Comand_loginITF.png", passw)
                 popup()
                 contador()
                 Bc.info("[INFO] Capturando a tela para predição numérica!")
-                captura(imagemOriginal)
+                captura(path_imagemOriginal)
                 Bc.info("[INFO] Realizando as tratativas e recortes na imagem original!")
-                tratar(caminhoImagemProcessada, imagemOriginal)
+                tratar(path_ImagemProcessada, path_imagemOriginal)
                 gteste()
                 predicaoGT()
             else:
@@ -126,9 +121,9 @@ def coleta():
                 popup()
                 contador()
                 Bc.info("[INFO] Capturando a tela para predição numérica!")
-                captura(imagemOriginal)
+                captura(path_imagemOriginal)
                 Bc.info("[INFO] Realizando as tratativas e recortes na imagem original!")
-                tratar(caminhoImagemProcessada, imagemOriginal)
+                tratar(path_ImagemProcessada, path_imagemOriginal)
                 gteste()
                 predicaoGT()
     except BaseException as err:
