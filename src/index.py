@@ -17,10 +17,10 @@ pyautogui.FAILSAFE = False
 passw = ["7", "5", "1", "1"]
 
 # Diretorios:
-path_atividadeFaltante = "./src/img/garrafasTeste/atividadeFaltando.png"
-path_ImagemProcessada = "./src/img/ImgProcess/"
-path_imagemOriginal = "./src/img/Print/print.jpg"
-path_imagemGTeste = "./src/img/Print/printGrfTeste.png"
+path_atividadeFaltante = "./src/img/grfTeste/atividadeFaltando.png"
+path_ImagemProcessada = "./src/img/processada/"
+path_imagemOriginal = "./src/img/contadores/contadores.jpg"
+path_imagemGTeste = "./src/img/grfTeste/grfTeste.png"
 path_Modelo = "./src/models/modelo_rf.pkl"
 path_namelog = "./logs/Erros.log"
 
