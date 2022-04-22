@@ -1,7 +1,7 @@
 import os
 
-import cv2
 import numpy as np
+from cv2 import cv2
 
 
 # Classe para pré-processamento de imagem para que o dataset seja de 32x32 pixels

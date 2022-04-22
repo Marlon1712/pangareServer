@@ -1,7 +1,7 @@
-import cv2
 import numpy as np
+from cv2 import cv2
 from PIL import Image
-from utils.diretorios import criaDiretorio, removeArquivos
+from src.utils.diretorios import criaDiretorio, removeArquivos
 
 
 def tratar(caminhoImagemProcessada, imagemOriginal):

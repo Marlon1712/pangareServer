@@ -1,8 +1,7 @@
 from datetime import datetime
 
-from services.escritaDados import escreveSQL, printaResultados  # escreveIGS
-from utils.bcolors import info, succes, warging
-
+from ..services.escritaDados import escreveSQL, printaResultados  # escreveIGS
+from ..utils.bcolors import info, succes, warging
 from .predicaoRf import carregaModelo, predicao
 
 # from src.igs import *
@@ -42,7 +41,7 @@ def resultadoFinal(
     ]
     resultadosFinais = [int(x) for x in resultadosFinais]
 
-    succes("[INFO] Predição dos dados realizada!")
+    succes("[SUCESS] Predição dos dados realizada!")
 
     # variaveis de data e hora
     DataHora = datetime.now()
@@ -119,13 +118,9 @@ def resultadoFinal(
     # escreveIGS(valoresPredicao)
 
     # Escrevendo os dados no SQLite
-    # if data01.minute == 0:
-    #     escreveSQL(colunasSQL, valoresPredicao)
-    escreveSQL(colunasSQL, valoresPredicao)
-
-    # Finalizando programa
-    succes("[INFO] Programa finalizado!")
-    info("-" * 50)
+    if DataHora.minute == 0:
+        escreveSQL(colunasSQL, valoresPredicao)
+    # escreveSQL(colunasSQL, valoresPredicao)
 
 
 def numerosOitoCaixas(caminhoImagemProcessada, modelo):

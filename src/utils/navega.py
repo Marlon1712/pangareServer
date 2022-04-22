@@ -1,33 +1,34 @@
 import logging
 import os
+import time
 
 import pyautogui
 
 from .bcolors import info, warging
 
-pyautogui.PAUSE = 0.5
+pyautogui.PAUSE = 1
 pyautogui.FAILSAFE = False
 
 # diretorio comandos
-verifica_info = "./src/img/comands/Comand_info.png"
-tecla_voltar = "./src/img/comands/Comand_voltar.png"
-tecla_voltar1 = "./src/img/comands/Comand_voltar1.png"
-tecla_voltar2 = "./src/img/comands/Comand_voltar2.png"
-tecla_fechar_popup = "./src/img/comands/Comand_msg.png"
-tecla_fechar_popup1 = "./src/img/comands/Comand_msg1.png"
-tecla_info = "./src/img/comands/Comand_info1.png"
-tecla_contador = "./src/img/comands/Comand_tela_contador.png"
-tecla_grfTeste = "./src/img/comands/Comand_tela_garafa_teste.png"
-tecla_grfTeste1 = "./src/img/comands/Comand_tela_garafa_teste1.png"
-tecla_selct_uip = "./src/img/comands/Comand_inline.png"
-tecla_login = "./src/img/comands/Comand_login.png"
-tecla_login1 = "./src/img/comands/Comand_login1.png"
-tecla_login2 = "./src/img/comands/Comand_login2.png"
+tela_home = "./src/img/comands/home.png"
+tecla_voltar = "./src/img/comands/voltar.png"
+tecla_voltar1 = "./src/img/comands/voltar1.png"
+tecla_voltar2 = "./src/img/comands/voltar2.png"
+tecla_fechar_popup = "./src/img/comands/popup.png"
+tecla_fechar_popup1 = "./src/img/comands/popup1.png"
+tecla_info = "./src/img/comands/info.png"
+tecla_contador = "./src/img/comands/tela_contador.png"
+tecla_grfTeste = "./src/img/comands/tela_garafa_teste.png"
+tecla_grfTeste1 = "./src/img/comands/tela_garafa_teste1.png"
+tecla_selct_uip = "./src/img/comands/inline.png"
+tecla_login = "./src/img/comands/login.png"
+tecla_login1 = "./src/img/comands/login1.png"
+tecla_login2 = "./src/img/comands/login2.png"
 
 
-def verificaTela(image):
+def verificaTela():
     try:
-        if pyautogui.locateOnScreen(image):
+        if pyautogui.locateOnScreen(tela_home):
             return True
         else:
             return False
@@ -92,7 +93,7 @@ def tela_info():
         raise
 
 
-def contador():
+def tela_contador():
     """Clica na tecla para abrir tela contador de garrafas e executa a funcao
 
     Raises:
@@ -109,7 +110,7 @@ def contador():
         raise
 
 
-def gteste():
+def tela_gteste():
     """Abre tela de teste de garrafas e executa a funcao
 
 
@@ -120,6 +121,7 @@ def gteste():
     try:
         if pyautogui.locateOnScreen(tecla_grfTeste):
             pyautogui.click(tecla_grfTeste)
+
             if pyautogui.locateOnScreen(tecla_grfTeste1):
                 pyautogui.click(tecla_grfTeste1)
             else:
@@ -134,6 +136,7 @@ def gteste():
 
 
 def login(user: str, passw: list):
+    print(user)
     if pyautogui.locateOnScreen(user):
         # Tecla para LOGIN ITF
         pyautogui.click(user)
@@ -143,25 +146,30 @@ def login(user: str, passw: list):
         raise Exception("Tecla login ITF nao localizada!")
 
 
-def login_uip(user, passw):
-    for i in range(4):  # Clicando na porta para ter acesso ao login
+def tela_login_uip(user: str, passw: list):
 
-        if pyautogui.locateOnScreen(tecla_login):
-            pyautogui.click(tecla_login)
-            login(user, passw)
-            break
-        else:
-            if pyautogui.locateOnScreen(tecla_login1):
-                pyautogui.click(tecla_login1)
-                login(user, passw)
-                break
+    try:
+        tentativa = 0
+        while True:
+            if pyautogui.locateOnScreen(tecla_login):
+                pyautogui.click(tecla_login)
             else:
-                if pyautogui.locateOnScreen(tecla_login2):
-                    pyautogui.click(tecla_login2)
-                    login(user, passw)
-                    break
-        if i > 3:
-            raise Exception("Tecla login nao localizada!")
+                if pyautogui.locateOnScreen(tecla_login1):
+                    pyautogui.click(tecla_login1)
+                else:
+                    if pyautogui.locateOnScreen(tecla_login2):
+                        pyautogui.click(tecla_login2)
+
+            if pyautogui.locateOnScreen(user):
+                # Tecla para LOGIN ITF
+                pyautogui.click(user)
+                # Senha para acesso Administrador do UIP
+                pyautogui.press(passw)
+                # raise Exception("Tela login nao localizada!")
+                break
+    except BaseException as err:
+        logging.error(f"[ERRO] Ao acessar tela login nao localizada {err}")
+        warging(f"[WARN] {err}")
 
 
 def uip():

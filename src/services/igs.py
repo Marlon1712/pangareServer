@@ -1,7 +1,7 @@
 import logging
 
 from opcua import Client, ua
-from utils.bcolors import error
+from src.utils.bcolors import error
 
 
 class IGS:

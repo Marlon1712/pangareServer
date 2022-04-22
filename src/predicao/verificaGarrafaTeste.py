@@ -56,11 +56,11 @@ def detectaVerificacaoTestes(caminhoPrintTeste):
     rec_proc = list(paths.list_images("./src/img/numeros/Rec_processados"))
 
     # Deleta as imagens dos números caso elas existam nas pastas
-    for (i, arquivos) in enumerate(data):
+    for i, _ in enumerate(data):
         if data != []:
             os.remove(data[i])
 
-    for (i, arquivos) in enumerate(rec_proc):
+    for i, _ in enumerate(rec_proc):
         if rec_proc != []:
             os.remove(rec_proc[i])
 
@@ -85,7 +85,7 @@ def detectaVerificacaoTestes(caminhoPrintTeste):
     Rec_processados = []
 
     # Separação dos números por display
-    for (i, imagens) in enumerate(displays):
+    for i, _ in enumerate(displays):
         if displays[i] == "Data":
             Data.append(numeros[i])
         if displays[i] == "Rec_processados":
@@ -98,13 +98,13 @@ def detectaVerificacaoTestes(caminhoPrintTeste):
     num_data = ""
     num_process = ""
 
-    for (i, predicoes) in enumerate(hora_data):
+    for i, _ in enumerate(hora_data):
         if i < 4:
             num_hora = num_hora + hora_data[i]
         else:
             num_data = num_data + hora_data[i]
 
-    for (i, predicoes) in enumerate(rec_proc):
+    for i, _ in enumerate(rec_proc):
         num_process = num_process + rec_proc[i]
 
     return str(num_data), str(num_hora), str(num_process)

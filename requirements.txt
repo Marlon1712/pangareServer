@@ -28,7 +28,7 @@ mypy-extensions==0.4.3
 Naked==0.1.31
 numpy==1.22.3
 opcua==0.98.13
-opencv-python==4.5.5.64
+opencv-python==4.5.2.54
 pandas==1.4.2
 parso==0.8.2
 pathspec==0.9.0

@@ -20,6 +20,6 @@ def captura(caminho_print: str):
             pyautogui.screenshot(caminho_print)
             x += 1
 
-        succes("[INFO] IMAGEM capturada!")
+        succes("[SUCESS] IMAGEM capturada!")
     except BaseException as err:
         error(f"[ERROR] Unexpected {err=}, {type(err)=}")

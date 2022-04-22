@@ -4,6 +4,8 @@ import time
 
 from src.app import coleta
 
+# from web_server import webserver
+
 
 def repeat_at_interval(scheduler, event, interval=60, add_n=10, start_t=None):
     """Adds 'add_n' more calls to "event" at each "interval" seconds"""
@@ -42,6 +44,7 @@ def main():
     thread = threading.Thread(target=scheduler.run)
     thread.start()
     while True:
+        # webserver()
         time.sleep(1)
 
 

@@ -1,17 +1,18 @@
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit, send
+
 from src.services.banco import Banco
 
 
-def main():
+def webserver():
 
     app = Flask(__name__, template_folder="./web/templates", static_folder="./web/static")
     sock = SocketIO(app)
 
     messages = []
 
-    # colunas = ["id", "DataHora", "processados", "produzidos", "expulsos", "porcentagem_expulsos"]
-    colunas = ["DISTINCT DataHora", "processados"]
+    colunas = ["id", "DataHora", "processados", "produzidos", "expulsos", "porcentagem_expulsos"]
+    # colunas = ["DISTINCT DataHora", "processados"]
 
     @app.route("/")
     def home():
@@ -46,4 +47,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    webserver()

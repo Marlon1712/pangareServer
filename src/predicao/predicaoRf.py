@@ -1,6 +1,6 @@
 import pickle
 
-import cv2
+from cv2 import cv2
 
 from .preprocessamentoImagem import SimplePreprocessor
 
