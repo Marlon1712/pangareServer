@@ -13,7 +13,7 @@ __pycache__
 **.swo
 **.DS_Store
 src/img/*
-**.sql
+*.sql
 t_tesseract.py
 
 
