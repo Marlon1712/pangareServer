@@ -1,10 +1,10 @@
-__pycache__/
+**/__pycache__
 # dependencies
 /tesseract
 /venv
 /data/*
 /logs/*
-*.egg-info/
+**.egg-info/
 
 
 # vscode

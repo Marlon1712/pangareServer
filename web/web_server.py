@@ -1,12 +1,11 @@
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit, send
-
 from src.services.banco import Banco
 
 
 def main():
 
-    app = Flask(__name__, template_folder="./src/web/templates", static_folder="./src/web/static")
+    app = Flask(__name__, template_folder="./web/templates", static_folder="./web/static")
     sock = SocketIO(app)
 
     messages = []
