@@ -129,7 +129,7 @@ class Banco:
                     self._cursor.execute(query)
                     self._conexao.commit()
             else:
-                raise Exception("Filtro não informado")
+                raise Exception("Parametro config nao pode ser None informado")
         except BaseException as err:
             print(err)
 
