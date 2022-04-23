@@ -63,7 +63,6 @@ def escreveSQL(prefixo, listaResultados):
                 inputDicionario[keyBanco] = f"'{listaResultados[i]}'"
             else:
                 inputDicionario[keyBanco] = listaResultados[i]
-    banco.desconect()
 
     try:
         banco.insert(inputDicionario)
