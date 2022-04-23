@@ -11,9 +11,9 @@ def criaDiretorio(caminhoImagemProcessada):
     try:
         os.mkdir(caminhoImagemProcessada)
     except FileExistsError:
-        info(f"[INFO] Pasta: {caminhoImagemProcessada} existe!")
+        info(f"Pasta: {caminhoImagemProcessada} existe!")
         quantidadeArquivos = len(os.listdir(caminhoImagemProcessada))
-        info(f"[INFO] Numero de arquivos na pasta: {str(quantidadeArquivos)}")
+        info(f"Numero de arquivos na pasta: {str(quantidadeArquivos)}")
 
 
 def removeArquivos(caminhoImagemProcessada):

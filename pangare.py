@@ -6,7 +6,6 @@ from src.app import coleta
 
 # from web_server import webserver
 
-
 def repeat_at_interval(scheduler, event, interval=60, add_n=10, start_t=None):
     """Adds 'add_n' more calls to "event" at each "interval" seconds"""
     # Unix timestamp
@@ -50,3 +49,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    

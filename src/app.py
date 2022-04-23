@@ -54,7 +54,7 @@ def predicaoGT():
     dicionarioAtividadesFaltantes = dict(enumerate(pyautogui.locateAllOnScreen(path_atividadeFaltante)))
     todasAtividadesFaltantes = {}
     if len(dicionarioAtividadesFaltantes) == 0:
-        info("[INFO] Todas as atividades de garrafas teste foram realizadas")
+        info("Todas as atividades de garrafas teste foram realizadas")
         for keyBanco, _ in dicionarioAtividadesGarrafasTeste.items():
             todasAtividadesFaltantes[keyBanco] = 1
     else:
@@ -76,7 +76,7 @@ def predicaoGT():
     ) = detectaVerificacaoTestes(path_imagemGTeste)
 
     dataHoraGarrafaTeste = f"20{datagt[-2:]}-{datagt[-4:-2]}-{datagt[:-4]} {horagt[:2]}:{horagt[2:4]}:00.000"
-    info("[INFO] Prevendo os resultados e escrevendo nos bancos de dados !")
+    info("Prevendo os resultados e escrevendo nos bancos de dados !")
     resultadoFinal(
         path_ImagemProcessada,
         path_Modelo,
@@ -92,7 +92,7 @@ def coleta():
         os_cmd = 'tasklist /fi "imagename eq javaw.exe" /fo csv 2>NUL | find /I "javaw.exe">NUL'
 
         if os.system(os_cmd) != 0:
-            info("[INFO] Abrindo Pilot !")
+            info("Abrindo Pilot !")
             pyautogui.hotkey("win", "1")
             time.sleep(5)
 
@@ -104,50 +104,50 @@ def coleta():
 
             tela_contador()
 
-            info("[INFO] Capturando a tela Contadores!")
+            info("Capturando a tela Contadores!")
             captura(path_imagemOriginal)
 
             tela_info()
 
             tela_gteste()
 
-            info("[INFO] Capturando a tela Garrafa Teste!")
+            info("Capturando a tela Garrafa Teste!")
             captura(path_imagemGTeste)
 
             tela_info()
 
-            info("[INFO] Realizando as tratativas e recortes na imagem original!")
+            info("Realizando as tratativas e recortes na imagem original!")
             tratar(path_ImagemProcessada, path_imagemOriginal)
             predicaoGT()
 
         else:
-            info("[INFO] Programa esta Aberto!")
+            info("Programa esta Aberto!")
 
             popup()
 
             tela_contador()
 
-            info("[INFO] Capturando a tela Contadores!")
+            info("Capturando a tela Contadores!")
             captura(path_imagemOriginal)
 
             tela_info()
 
             tela_gteste()
 
-            info("[INFO] Capturando a tela Garrafa Teste!")
+            info("Capturando a tela Garrafa Teste!")
             captura(path_imagemGTeste)
 
             tela_info()
 
-            info("[INFO] Realizando as tratativas e recortes na imagem original!")
+            info("Realizando as tratativas e recortes na imagem original!")
             tratar(path_ImagemProcessada, path_imagemOriginal)
             predicaoGT()
 
     except BaseException as err:
-        logging.error(f"[ERRO] {err}")
+        logging.error(f"{err}")
         os.system("taskkill /im javaw.exe")
-        warging(f"[WARN] Erro ao iniciar rotina {err}")
-        error("[INFO] Pilot foi fechado!")
+        warging(f"Erro ao iniciar rotina {err}")
+        error("Pilot foi fechado!")
         raise
 
 

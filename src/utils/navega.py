@@ -149,7 +149,7 @@ def login(user: str, passw: list):
 def tela_login_uip(user: str, passw: list):
 
     try:
-        tentativa = 0
+
         while True:
             if pyautogui.locateOnScreen(tecla_login):
                 pyautogui.click(tecla_login)

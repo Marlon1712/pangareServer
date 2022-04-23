@@ -1,10 +1,13 @@
 from datetime import datetime
 
+# from src.igs import *
+from rich.console import Console
+
 from ..services.escritaDados import escreveSQL, printaResultados  # escreveIGS
 from ..utils.bcolors import info, succes, warging
 from .predicaoRf import carregaModelo, predicao
 
-# from src.igs import *
+console = Console()
 
 
 def resultadoFinal(
@@ -41,7 +44,7 @@ def resultadoFinal(
     ]
     resultadosFinais = [int(x) for x in resultadosFinais]
 
-    succes("[SUCESS] Predição dos dados realizada!")
+    succes("Predição dos dados realizada!")
 
     # variaveis de data e hora
     DataHora = datetime.now()
@@ -110,9 +113,10 @@ def resultadoFinal(
         garrafasProcessadasUltimoTeste,
     ]
 
-    warging("=" * 50)
-    printaResultados(colunasSQL, valoresPredicao)
-    warging("=" * 50)
+    with console.status("[green]Realizando atividado...[/]") as arquivo:
+        warging("=" * 50)
+        printaResultados(colunasSQL, valoresPredicao)
+        warging("=" * 50)
 
     # Escrevendo dados no IGS
     # escreveIGS(valoresPredicao)
