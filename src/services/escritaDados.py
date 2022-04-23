@@ -133,7 +133,3 @@ def printaResultados(prefixo, listaResultados):
                 print(f"[yellow][bold]{key}[/][/] : {'[green]OK[/]' if valor == 1 else '[red]NOK[/]'}")
         else:
             print(f"[yellow][bold]{keyBanco}[/][/] : [green]{listaResultados[i]}[/]")
-
-    print(
-        f"[yellow][bold]Result_Check[/][/] : {'[red]NOK[/]' if sum([ int(x) for x in listaResultados[20].values() ]) <= 3 else '[green]OK[/]'}"
-    )
