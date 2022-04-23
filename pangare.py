@@ -2,9 +2,10 @@ import sched
 import threading
 import time
 
-from main import coleta
+from src.main import coleta
 
 # from web_server import webserver
+
 
 def repeat_at_interval(scheduler, event, interval=60, add_n=10, start_t=None):
     """Adds 'add_n' more calls to "event" at each "interval" seconds"""
@@ -49,4 +50,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
