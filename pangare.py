@@ -2,7 +2,7 @@ import sched
 import threading
 import time
 
-from src.app import coleta
+from main import coleta
 
 # from web_server import webserver
 
