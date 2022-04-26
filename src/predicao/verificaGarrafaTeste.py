@@ -1,5 +1,6 @@
 import os
 import pickle
+import warnings
 
 import imutils
 from cv2 import cv2
@@ -69,8 +70,10 @@ def detectaVerificacaoTestes(caminhoPrintTeste):
     recorte("Rec_processados")
 
     # Carrega o modelo "modelo_knn.pkl" para a variável model
-    with open("./src/models/modelo_knn.pkl", "rb") as f:
-        model = pickle.load(f)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", category=UserWarning)
+        with open("./src/models/modelo_knn.pkl", "rb") as f:
+            model = pickle.load(f)
 
     caminho = "./src/img/numeros"
     imagePaths = list(paths.list_images(caminho))  # Cria uma lista com todas as imagens presentes nas pastas internas

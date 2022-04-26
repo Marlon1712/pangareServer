@@ -1,13 +1,10 @@
 from datetime import datetime
 
-# from src.igs import *
-from rich.console import Console
-
 from ..services.escritaDados import escreveSQL, printaResultados  # escreveIGS
-from ..utils.bcolors import info, succes, warging
+from ..utils.bcolors import succes
 from .predicaoRf import carregaModelo, predicao
 
-console = Console()
+# from src.igs import *
 
 
 def resultadoFinal(
@@ -113,18 +110,16 @@ def resultadoFinal(
         garrafasProcessadasUltimoTeste,
     ]
 
-    with console.status("[green]Realizando atividado...[/]") as arquivo:
-        warging("=" * 50)
-        printaResultados(colunasSQL, valoresPredicao)
-        warging("=" * 50)
+    # Printando resultados
+    printaResultados(colunasSQL, valoresPredicao)
 
     # Escrevendo dados no IGS
     # escreveIGS(valoresPredicao)
 
     # Escrevendo os dados no SQLite
-    if DataHora.minute == 0:
-        escreveSQL(colunasSQL, valoresPredicao)
-    # escreveSQL(colunasSQL, valoresPredicao)
+    # if DataHora.minute == 0:
+    #     escreveSQL(colunasSQL, valoresPredicao)
+    escreveSQL(colunasSQL, valoresPredicao)
 
 
 def numerosOitoCaixas(caminhoImagemProcessada, modelo):

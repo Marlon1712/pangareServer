@@ -11,19 +11,35 @@ def webserver():
 
     messages = []
 
-    colunas = ["id", "DataHora", "processados", "produzidos", "expulsos", "porcentagem_expulsos"]
+    colunas = [
+        "DISTINCT horario_garrafa_teste",
+        "Garrafas_de_Teste",
+        "Controlador_do_Fundo",
+        "Cont_Fundo_Erro_Transp",
+        "Paredes_laterais_entrada",
+        "Paredes_laterais_saida",
+        "Controlad_Embocadura",
+        "Liquido_residual_HF_1",
+        "Liquido_residual_HF_2",
+        "Liquido_residual_IR",
+        "Cor_recipiente_incorreta",
+        "Controlo_ext1_entrada",
+    ]
     # colunas = ["DISTINCT DataHora", "processados"]
 
-    @app.route("/")
+    @app.route("/garrafa-teste")
     def home():
-        banco = Banco("./data/pangare.db", "uip")
+        banco = Banco("./data/pangare.db", "gft")
         coluna, row = banco.listar(colunas)
         banco.desconect()
-        return render_template("pangare.html", coluna=coluna, row=row)
+        return render_template("garrafaTeste.html", coluna=coluna, row=row)
 
-    @app.route("/pangare")
+    @app.route("/")
     def pangare():
-        return render_template("index.html")
+        banco = Banco("./data/pangare.db", "uip")
+        coluna, row = banco.listar([])
+        banco.desconect()
+        return render_template("contadores.html", coluna=coluna, row=row)
 
     @app.route("/config")
     def tec():

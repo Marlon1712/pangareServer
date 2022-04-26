@@ -17,7 +17,7 @@ def captura(caminho_print: str):
             os.remove(caminho_print)
 
         while x < 2:
-            pyautogui.screenshot(caminho_print)
+            pyautogui.screenshot(caminho_print, region=(0, 0, 1025, 762))
             x += 1
 
         succes("IMAGEM capturada!")

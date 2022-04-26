@@ -52,6 +52,7 @@ dicionarioAtividadesGarrafasTeste = {
 
 def predicaoGT():
     dicionarioAtividadesFaltantes = dict(enumerate(pyautogui.locateAllOnScreen(path_atividadeFaltante)))
+
     todasAtividadesFaltantes = {}
     if len(dicionarioAtividadesFaltantes) == 0:
         info("Todas as atividades de garrafas teste foram realizadas")
@@ -114,11 +115,11 @@ def coleta():
             info("Capturando a tela Garrafa Teste!")
             captura(path_imagemGTeste)
 
-            tela_info()
-
             info("Realizando as tratativas e recortes na imagem original!")
             tratar(path_ImagemProcessada, path_imagemOriginal)
             predicaoGT()
+
+            tela_info()
 
         else:
             info("Programa esta Aberto!")
@@ -137,11 +138,11 @@ def coleta():
             info("Capturando a tela Garrafa Teste!")
             captura(path_imagemGTeste)
 
-            tela_info()
-
             info("Realizando as tratativas e recortes na imagem original!")
             tratar(path_ImagemProcessada, path_imagemOriginal)
             predicaoGT()
+
+            tela_info()
 
     except BaseException as err:
         logging.error(f"{err}")

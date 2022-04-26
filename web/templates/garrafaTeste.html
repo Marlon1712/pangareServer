@@ -16,7 +16,7 @@
     <body >
         <div class="container mt-5">
             
-            <h1>RESULTADOS</h1>
+            <h1>RESULTADOS CHECK GARRAFA TESTE</h1>
             <table id="example" class="table table-striped " style="width:100%">   
             <thead >
                 <tr id="trhead">
@@ -42,18 +42,42 @@
 
             function DataTable(colunas,lista) {
 
+                let manualcolulas = [
+                                    "DataHora",
+                                    "Garrafas de Teste",
+                                    "Fundo",
+                                    "Fundo Transp",
+                                    "Paredes entrada",
+                                    "Paredes saida",
+                                    "Embocadura",
+                                    "HF_1",
+                                    "HF_2",
+                                    "IR",
+                                    "Cor",
+                                    "Contorno",
+                                ]
+
                 let trhead = document.getElementById('trhead');
                 let tbody = document.getElementById('tbody');
 
-                for(let i = 0 ; i < colunas.length; i++){
+                for(let i = 0 ; i < manualcolulas.length; i++){
                     let th = document.createElement('th');
-                    th.innerHTML = colunas[i];
+                    th.innerHTML = manualcolulas[i];
                     trhead.appendChild(th);
                 }
                 
                 for(let i = 0 ; i < lista.length; i++){
                     let tr = document.createElement('tr');
                     for(let j = 0 ; j < lista[i].length; j++){
+                        if(lista[i][j] == null){
+                            lista[i][j] = '-';
+                        }
+                        if(lista[i][j] == 1){
+                            lista[i][j] = 'OK';
+                        }
+                        if(lista[i][j] == 0){
+                            lista[i][j] = 'NOK';
+                        }
                         tr.insertCell(j).innerHTML = lista[i][j];
                     }
                     tbody.appendChild(tr);

@@ -56,7 +56,7 @@ class Banco:
                 valor = valor + str(v) + ","
             config = config[:-1]
             valor = valor[:-1]
-            query = f"INSERT INTO {self._tabela} ({config}) VALUES ({valor})"
+            query = f"INSERT OR IGNORE INTO {self._tabela} ({config}) VALUES ({valor})"
             self._cursor.execute(query)
             self._conexao.commit()
         except BaseException as err:

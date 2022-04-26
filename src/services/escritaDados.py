@@ -17,9 +17,11 @@ def escreveSQL(prefixo, listaResultados):
     salvos no banco de dados já com as porcentagens.\n
     """
     banco = Banco("./data/pangare.db", "uip")
+    bancoGfT = Banco("./data/pangare.db", "gft")
+
     banco.criar_tabela(
         {
-            "DataHora": "DATETIME",
+            "DataHora": "DATETIME NOT NULL UNIQUE",
             "processados": "INTEGER",
             "porcentagem_processados": "REAL",
             "produzidos": "INTEGER",
@@ -38,7 +40,11 @@ def escreveSQL(prefixo, listaResultados):
             "porcentagem_fundo": "REAL",
             "residual": "INTEGER",
             "porcentagem_residual": "REAL",
-            "horario_garrafa_teste": "DATETIME",
+        }
+    )
+    bancoGfT.criar_tabela(
+        {
+            "horario_garrafa_teste": "DATETIME NOT NULL UNIQUE",
             "Garrafas_de_Teste": "BOOLEAN",
             "Controlador_do_Fundo": "BOOLEAN",
             "Cont_Fundo_Erro_Transp": "BOOLEAN",
@@ -53,19 +59,34 @@ def escreveSQL(prefixo, listaResultados):
             "recipientes_processados_garrafa_teste": "INTEGER",
         }
     )
-    inputDicionario = {}
+    inputCDicionario = {}
+    inputGftDicionario = {}
+
     for i, keyBanco in enumerate(prefixo):
         if keyBanco == "falhas_garrafa_teste":
             for key, valor in listaResultados[i].items():
-                inputDicionario[key] = valor
+                inputGftDicionario[key] = valor
         else:
-            if keyBanco == "DataHora" or keyBanco == "horario_garrafa_teste":
-                inputDicionario[keyBanco] = f"'{listaResultados[i]}'"
+            if keyBanco == "DataHora":
+                inputCDicionario[keyBanco] = f"'{listaResultados[i]}'"
             else:
-                inputDicionario[keyBanco] = listaResultados[i]
+                if keyBanco == "horario_garrafa_teste":
+                    inputGftDicionario[keyBanco] = f"'{listaResultados[i]}'"
+                else:
+                    if keyBanco == "recipientes_processados_garrafa_teste":
+                        inputGftDicionario[keyBanco] = listaResultados[i]
+                    else:
+                        inputCDicionario[keyBanco] = listaResultados[i]
+
+    # for i, key, value in enumerate(inputDicionario.values()):
+    #     if i < 18:
+    #         inputCDicionario[key] = value
+    #     else:
+    #         inputGftDicionario[key] = value
 
     try:
-        banco.insert(inputDicionario)
+        banco.insert(inputCDicionario)
+        bancoGfT.insert(inputGftDicionario)
         succes("Dados escritos na tabela do SQLite!")
     except BaseException as err:
         error(f"Unexpected {err=}, {type(err)=}")
@@ -121,14 +142,20 @@ def escreveIGS(resultados):
         resultados[7],
     )
 
-    succes("[SUCESS] Dados enviados para o Servidor IGS!")
+    succes("Dados enviados para o Servidor IGS!")
 
 
 def printaResultados(prefixo, listaResultados):
-
+    print(f"[blue bold]{'=' *18}[ Contadores ]{'=' *18}[/]")
     for i, keyBanco in enumerate(prefixo):
         if keyBanco == "falhas_garrafa_teste":
             for key, valor in listaResultados[i].items():
                 print(f"[yellow][bold]{key}[/][/] : {'[green]OK[/]' if valor == 1 else '[red]NOK[/]'}")
         else:
-            print(f"[yellow][bold]{keyBanco}[/][/] : [green]{listaResultados[i]}[/]")
+            if keyBanco == "horario_garrafa_teste":
+                print(f"[blue bold]{'=' *17}[ Garrafa Teste ]{'=' *16}[/]")
+                print(f"[yellow][bold]{keyBanco}[/][/] : [green]{listaResultados[i]}[/]")
+            else:
+                print(f"[yellow][bold]{keyBanco}[/][/] : [green]{listaResultados[i]}[/]")
+
+    print(f"[blue bold]{'=' *50}[/]")
