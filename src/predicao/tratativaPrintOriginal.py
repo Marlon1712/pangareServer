@@ -46,13 +46,14 @@ def tratar(caminhoImagemProcessada, imagemOriginal):
         "rec_proc",
         "rec_prod",
         "rec_exp",
-        "rec_err_ech",
-        "rec_err_cap",
-        "rec_err_rot",
-        "rec_ams_ech",
-        "rec_ams_cap",
-        "rec_ams_rec",
+        "rec_delta_A",
+        "rec_delta_B",
+        "rec_err_boca",
+        "rec_err_parede",
+        "rec_err_fundo",
+        "rec_err_residual",
     ]
+
     caminhosImagens = [caminhoImagemProcessada + x for x in sufixosInspetor]
 
     # Para cada valor, fa o corte da imagem

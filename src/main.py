@@ -92,7 +92,7 @@ def predicaoGT(console, st):
 
 def coleta(modo="Producao"):
 
-    with console.status(f"[bold green]Programa executando em {modo} Producao![/]"):
+    with console.status(f"[bold green]Programa executando em modo {modo}![/]"):
         time.sleep(1)
     try:
         start = time.time()

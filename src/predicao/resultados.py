@@ -22,23 +22,23 @@ def resultadoFinal(
     modelo = carregaModelo(caminhoModelo)
     num_proc, num_prod, num_exp = numerosOitoCaixas(caminhoImagemProcessada, modelo)
     (
-        num_err_ech,
-        num_err_cap,
-        num_err_rot,
-        num_ams_ech,
-        num_ams_cap,
-        num_ams_rec,
+        rec_delta_A,
+        rec_delta_B,
+        rec_err_boca,
+        rec_err_parede,
+        rec_err_fundo,
+        rec_err_residual,
     ) = numeroSeteCaixas(caminhoImagemProcessada, modelo)
     resultadosFinais = [
         num_proc,
         num_prod,
         num_exp,
-        num_err_ech,
-        num_err_cap,
-        num_err_rot,
-        num_ams_ech,
-        num_ams_cap,
-        num_ams_rec,
+        rec_delta_A,
+        rec_delta_B,
+        rec_err_boca,
+        rec_err_parede,
+        rec_err_fundo,
+        rec_err_residual,
     ]
     resultadosFinais = [int(x) for x in resultadosFinais]
 
@@ -52,12 +52,12 @@ def resultadoFinal(
     porcentagemProcessados = 0 if int(num_proc) == 0 else 100
     porcentagemProduzidos = 0 if int(num_proc) == 0 else round((int(num_prod) / int(num_proc)) * 100, 2)
     porcentagemExpulsos = 0 if int(num_proc) == 0 else round((int(num_exp) / int(num_proc)) * 100, 2)
-    porcentagemDelta01 = 0 if int(num_proc) == 0 else round((int(num_err_ech) / int(num_proc)) * 100, 2)
-    porcentagemDelta02 = 0 if int(num_proc) == 0 else round((int(num_err_cap) / int(num_proc)) * 100, 2)
-    porcentagemBoca = 0 if int(num_proc) == 0 else round((int(num_err_rot) / int(num_proc)) * 100, 2)
-    porcentagemParede = 0 if int(num_proc) == 0 else round((int(num_ams_ech) / int(num_proc)) * 100, 2)
-    porcentagemFundo = 0 if int(num_proc) == 0 else round((int(num_ams_cap) / int(num_proc)) * 100, 2)
-    porcentagemResidual = 0 if int(num_proc) == 0 else round((int(num_ams_rec) / int(num_proc)) * 100, 2)
+    porcentagemDelta01 = 0 if int(num_proc) == 0 else round((int(rec_delta_A) / int(num_proc)) * 100, 2)
+    porcentagemDelta02 = 0 if int(num_proc) == 0 else round((int(rec_delta_B) / int(num_proc)) * 100, 2)
+    porcentagemBoca = 0 if int(num_proc) == 0 else round((int(rec_err_boca) / int(num_proc)) * 100, 2)
+    porcentagemParede = 0 if int(num_proc) == 0 else round((int(rec_err_boca) / int(num_proc)) * 100, 2)
+    porcentagemFundo = 0 if int(num_proc) == 0 else round((int(rec_err_fundo) / int(num_proc)) * 100, 2)
+    porcentagemResidual = 0 if int(num_proc) == 0 else round((int(rec_err_residual) / int(num_proc)) * 100, 2)
 
     # Lista de colunas
     colunasSQL = [
@@ -94,17 +94,17 @@ def resultadoFinal(
         porcentagemProduzidos,
         num_exp,
         porcentagemExpulsos,
-        num_err_ech,
+        rec_delta_A,
         porcentagemDelta01,
-        num_err_cap,
+        rec_delta_B,
         porcentagemDelta02,
-        num_err_rot,
+        rec_err_boca,
         porcentagemBoca,
-        num_ams_ech,
+        rec_err_boca,
         porcentagemParede,
-        num_ams_cap,
+        rec_err_fundo,
         porcentagemFundo,
-        num_ams_rec,
+        rec_err_residual,
         porcentagemResidual,
         datetime.strptime(dataHoraGarrafaTeste, "%Y-%m-%d %H:%M:%S.%f"),
         todasAtividadesFaltantes,
@@ -120,7 +120,7 @@ def resultadoFinal(
     # Escrevendo os dados no SQLite
     # if DataHora.minute == 0:
     #     escreveSQL(colunasSQL, valoresPredicao,st)
-    escreveSQL(colunasSQL, valoresPredicao, st,console)
+    escreveSQL(colunasSQL, valoresPredicao, st, console)
 
 
 def numerosOitoCaixas(caminhoImagemProcessada, modelo):
@@ -160,42 +160,42 @@ def numeroSeteCaixas(caminhoImagemProcessada, modelo):
     j = 1
 
     # variáveis de retorno
-    num_err_ech = ""
-    num_err_cap = ""
-    num_err_rot = ""
-    num_ams_ech = ""
-    num_ams_cap = ""
-    num_ams_rec = ""
+    rec_delta_A = ""
+    rec_delta_B = ""
+    rec_err_boca = ""
+    rec_err_parede = ""
+    rec_err_fundo = ""
+    rec_err_residual = ""
 
     while j < 8:
-        img_err_ech = str(caminhoImagemProcessada) + str("/rec_err_ech") + str(j) + str(".png")
-        img_err_cap = str(caminhoImagemProcessada) + str("/rec_err_cap") + str(j) + str(".png")
-        img_err_rot = str(caminhoImagemProcessada) + str("/rec_err_rot") + str(j) + str(".png")
-        img_ams_ech = str(caminhoImagemProcessada) + str("/rec_ams_ech") + str(j) + str(".png")
-        img_ams_cap = str(caminhoImagemProcessada) + str("/rec_ams_cap") + str(j) + str(".png")
-        img_ams_rec = str(caminhoImagemProcessada) + str("/rec_ams_rec") + str(j) + str(".png")
+        img_delta_A = str(caminhoImagemProcessada) + str("/rec_delta_A") + str(j) + str(".png")
+        img_delta_B = str(caminhoImagemProcessada) + str("/rec_delta_B") + str(j) + str(".png")
+        img_err_boca = str(caminhoImagemProcessada) + str("/rec_err_boca") + str(j) + str(".png")
+        img_ams_parede = str(caminhoImagemProcessada) + str("/rec_err_parede") + str(j) + str(".png")
+        img_ams_fundo = str(caminhoImagemProcessada) + str("/rec_err_fundo") + str(j) + str(".png")
+        img_ams_residual = str(caminhoImagemProcessada) + str("/rec_err_residual") + str(j) + str(".png")
 
-        img4 = predicao(img_err_ech, modelo)
-        img5 = predicao(img_err_cap, modelo)
-        img6 = predicao(img_err_rot, modelo)
-        img7 = predicao(img_ams_ech, modelo)
-        img8 = predicao(img_ams_cap, modelo)
-        img9 = predicao(img_ams_rec, modelo)
+        img4 = predicao(img_delta_A, modelo)
+        img5 = predicao(img_delta_B, modelo)
+        img6 = predicao(img_err_boca, modelo)
+        img7 = predicao(img_ams_parede, modelo)
+        img8 = predicao(img_ams_fundo, modelo)
+        img9 = predicao(img_ams_residual, modelo)
 
-        num_err_ech = str(num_err_ech) + str(img4)
-        num_err_cap = str(num_err_cap) + str(img5)
-        num_err_rot = str(num_err_rot) + str(img6)
-        num_ams_ech = str(num_ams_ech) + str(img7)
-        num_ams_cap = str(num_ams_cap) + str(img8)
-        num_ams_rec = str(num_ams_rec) + str(img9)
+        rec_delta_A = str(rec_delta_A) + str(img4)
+        rec_delta_B = str(rec_delta_B) + str(img5)
+        rec_err_boca = str(rec_err_boca) + str(img6)
+        rec_err_parede = str(rec_err_parede) + str(img7)
+        rec_err_fundo = str(rec_err_fundo) + str(img8)
+        rec_err_residual = str(rec_err_residual) + str(img9)
 
         j = j + 1
 
     return (
-        int(num_err_ech),
-        int(num_err_cap),
-        int(num_err_rot),
-        int(num_ams_ech),
-        int(num_ams_cap),
-        int(num_ams_rec),
+        int(rec_delta_A),
+        int(rec_delta_B),
+        int(rec_err_boca),
+        int(rec_err_parede),
+        int(rec_err_fundo),
+        int(rec_err_residual),
     )
