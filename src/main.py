@@ -90,14 +90,14 @@ def predicaoGT(console, st):
     )
 
 
-def coleta(modo="Producao"):
+def coleta(dev=False):
 
-    with console.status(f"[bold green]Programa executando em modo {modo}![/]"):
-        time.sleep(1)
     try:
-        start = time.time()
+        os.system("cls" if os.name == "nt" else "clear")
+        if dev is True:
+            console.print("[bold green]Programa executando em modo [bold red]Dev[/]![/]")
+
         with console.status("[bold green]Verificando se pilot esta aberto!]/]"):
-            os.system("cls" if os.name == "nt" else "clear")
             os_cmd = 'tasklist /fi "imagename eq javaw.exe" /fo csv 2>NUL | find /I "javaw.exe">NUL'
 
         if os.system(os_cmd) != 0:
@@ -138,9 +138,7 @@ def coleta(modo="Producao"):
             with console.status("[bold green]Prevendo valors garrafa teste![/]") as st:
                 predicaoGT(console, st)
 
-            with console.status("[bold green]Voltando para tela principal![/]"):
-                tela_info(console)
-
+            tela_info(console)
         else:
             with console.status("[bold green]Pilot Aberto![/]"):
                 # info("Programa esta Aberto!")
@@ -170,11 +168,8 @@ def coleta(modo="Producao"):
                 tratar(path_ImagemProcessada, path_imagemOriginal)
             with console.status("[bold green]Prevendo valors garrafa teste![/]") as st:
                 predicaoGT(console, st)
-            with console.status("[bold green]Voltando para tela principal![/]"):
-                tela_info(console)
 
-        final = time.time()
-        console.print(f"[bold red]Tempo de execução: [bold green]{round(final - start,2)}[/] segundos")
+            tela_info(console)
     except BaseException as err:
         logging.error(f"{err}")
         os.system("taskkill /im javaw.exe")
@@ -183,4 +178,4 @@ def coleta(modo="Producao"):
 
 
 if __name__ == "__main__":
-    coleta("[bold red]Dev[/]")
+    coleta()

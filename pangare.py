@@ -55,6 +55,6 @@ def main():
 dev = False
 if __name__ == "__main__":
     if dev is True:
-        coleta("[bold red]Dev[/]")
+        coleta(True)
     else:
         main()

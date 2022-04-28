@@ -59,7 +59,9 @@ def escreveSQL(prefixo, listaResultados, st, console):
     inputCDicionario = {}
     inputGftDicionario = {}
 
+    st.update(f"[green bold]Processando [0/{len(prefixo)}][/]")
     for i, keyBanco in enumerate(prefixo):
+        st.update(f"[green bold]Processando [{i}/{len(prefixo)}][/]")
         if keyBanco == "falhas_garrafa_teste":
             for key, valor in listaResultados[i].items():
                 inputGftDicionario[key] = valor
@@ -143,16 +145,17 @@ def escreveIGS(resultados, st):
 
 
 def printaResultados(prefixo, listaResultados, st):
+
     st.print(f"[blue bold]{'=' *18}[ Contadores ]{'=' *18}[/]")
     for i, keyBanco in enumerate(prefixo):
         if keyBanco == "falhas_garrafa_teste":
             for key, valor in listaResultados[i].items():
-                st.print(f"[yellow][bold]{key}[/][/] : {'[green]OK[/]' if valor == 1 else '[red]NOK[/]'}")
+                st.print(f"[yellow bold]{key} : {'[green]OK[/]' if valor == 1 else '[red]NOK[/]'}[/]")
         else:
             if keyBanco == "horario_garrafa_teste":
                 st.print(f"[blue bold]{'=' *17}[ Garrafa Teste ]{'=' *16}[/]")
-                st.print(f"[yellow][bold]{keyBanco}[/][/] : [green]{listaResultados[i]}[/]")
+                st.print(f"[yellow bold]{keyBanco} : [green]{listaResultados[i]}[/]")
             else:
-                st.print(f"[yellow][bold]{keyBanco}[/][/] : [green]{listaResultados[i]}[/]")
+                st.print(f"[yellow bold]{keyBanco} : [green]{listaResultados[i]}[/]")
 
     st.print(f"[blue bold]{'=' *50}[/]")
