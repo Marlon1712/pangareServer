@@ -7,8 +7,6 @@
         <title>Pangare</title>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename= 'css/pangare.css') }}" media="screen" />
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename= 'css/bootstrap.min.css') }}" media="screen" />
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename= 'css/dataTables.bootstrap5.min.css') }}" media="screen" />
-        <script src="../static/js/socket.io.js"></script>
         <script src="../static/js/jquery-3.5.1.js"></script>
         <script src="../static/js/jquery.dataTables.min.js"></script>
         <script src="../static/js/dataTables.bootstrap5.min.js"></script>
@@ -17,6 +15,7 @@
         <div class="container mt-5">
             
             <h1>CONTADORES UIP</h1>
+            <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename= 'css/dataTables.bootstrap5.min.css') }}" media="screen" />
             <table id="example" class="table table-striped " style="width:100%">   
             <thead >
                 <tr id="trhead">
@@ -27,7 +26,7 @@
             </tbody>
             </table>
         </div>
-
+        
         <script>
             $(document).ready(function () {
                 $('#example').DataTable()

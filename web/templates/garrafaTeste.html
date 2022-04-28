@@ -5,66 +5,113 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Pangare</title>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename= 'css/pangare.css') }}" media="screen" />
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename= 'css/bootstrap.min.css') }}" media="screen" />
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename= 'css/dataTables.bootstrap5.min.css') }}" media="screen" />
-        <script src="../static/js/socket.io.js"></script>
         <script src="../static/js/jquery-3.5.1.js"></script>
-        <script src="../static/js/jquery.dataTables.min.js"></script>
+        <script src="../static/js/jquery.dataTables.min.js
+        "></script>
         <script src="../static/js/dataTables.bootstrap5.min.js"></script>
+        <style>
+            h1 {
+                border: 2px #eee solid;
+                color: brown;
+                text-align: center;
+                padding: 10px;
+                }
+            
+                td.OK {
+                background-color: green;
+                }
+                td.NOK {
+                background-color: red;
+                }
+        </style>
     </head>
     <body >
         <div class="container mt-5">
             
-            <h1>RESULTADOS CHECK GARRAFA TESTE</h1>
-            <table id="example" class="table table-striped " style="width:100%">   
+            <h1>UIP502001 - RESULTADOS CHECK GARRAFA TESTE</h1>
+            <table id="example" class="table table-striped table-hover table-sm table-responsive " style="width:100%">   
             <thead >
+
                 <tr id="trhead">
-                    
+                    <th>DataHora</th>
+                    <th data-cell-style="CellStyle">Garrafas de Teste</th>
+                    <th data-cell-style="CellStyle">Fundo</th>
+                    <th data-cell-style="CellStyle">Fundo Transp</th>
+                    <th data-cell-style="CellStyle">Paredes entrada</th>
+                    <th data-cell-style="CellStyle">Paredes saida</th>
+                    <th data-cell-style="CellStyle">Embocadura</th>
+                    <th data-cell-style="CellStyle">HF_1</th>
+                    <th data-cell-style="CellStyle">HF_2</th>
+                    <th data-cell-style="CellStyle">IR</th>
+                    <th data-cell-style="CellStyle">Cor</th>
+                    <th data-cell-style="CellStyle">Contorno</th>
                 </tr>
             </thead>
             <tbody id="tbody">
             </tbody>
             </table>
         </div>
-
         <script>
-            $(document).ready(function () {
-                $('#example').DataTable()
-            });
-
+            
             window.onload = function () {
                 let colunas = JSON.parse('{{ coluna | tojson }}');
                 let lista = JSON.parse('{{ row | tojson }}');
                 DataTable(colunas,lista);
-
+                
             };
+            
+            $(document).ready(function () {
+                $('#example').DataTable()
+            });
+
+            function CellStyle(value, row, index,field) {
+                console.log(value,row,index);
+                var classes = [];
+                var percent = 0;
+                var backColor = '';  
+                
+                if (value == 'NOK') {
+                    backColor = 'red';
+                }
+                else {
+                    backColor = 'green';
+                }           
+
+
+                return {
+                    css: {
+                        "background-color": backColor
+                    }
+                };
+            }
 
             function DataTable(colunas,lista) {
 
-                let manualcolulas = [
-                                    "DataHora",
-                                    "Garrafas de Teste",
-                                    "Fundo",
-                                    "Fundo Transp",
-                                    "Paredes entrada",
-                                    "Paredes saida",
-                                    "Embocadura",
-                                    "HF_1",
-                                    "HF_2",
-                                    "IR",
-                                    "Cor",
-                                    "Contorno",
-                                ]
+                // let manualcolulas = [
+                //                     "DataHora",
+                //                     "Garrafas de Teste",
+                //                     "Fundo",
+                //                     "Fundo Transp",
+                //                     "Paredes entrada",
+                //                     "Paredes saida",
+                //                     "Embocadura",
+                //                     "HF_1",
+                //                     "HF_2",
+                //                     "IR",
+                //                     "Cor",
+                //                     "Contorno",
+                //                 ]
 
-                let trhead = document.getElementById('trhead');
+                // let trhead = document.getElementById('trhead');
                 let tbody = document.getElementById('tbody');
 
-                for(let i = 0 ; i < manualcolulas.length; i++){
-                    let th = document.createElement('th');
-                    th.innerHTML = manualcolulas[i];
-                    trhead.appendChild(th);
-                }
+                // for(let i = 0 ; i < manualcolulas.length; i++){
+                //     let th = document.createElement('th');
+                //     th.innerHTML = manualcolulas[i];
+                //     trhead.appendChild(th);
+                // }
                 
                 for(let i = 0 ; i < lista.length; i++){
                     let tr = document.createElement('tr');

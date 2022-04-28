@@ -3,13 +3,15 @@ import os
 import time
 
 import pyautogui
+from rich.console import Console
 
 from .predicao.resultados import resultadoFinal
 from .predicao.tratativaPrintOriginal import tratar
 from .predicao.verificaGarrafaTeste import detectaVerificacaoTestes
-from .utils.bcolors import error, info, warging
 from .utils.navega import popup, tela_contador, tela_gteste, tela_info, tela_login_uip, uip
 from .utils.printaTela import captura
+
+console = Console()
 
 pyautogui.PAUSE = 1
 pyautogui.FAILSAFE = False
@@ -50,12 +52,12 @@ dicionarioAtividadesGarrafasTeste = {
 }
 
 
-def predicaoGT():
+def predicaoGT(console, st):
     dicionarioAtividadesFaltantes = dict(enumerate(pyautogui.locateAllOnScreen(path_atividadeFaltante)))
 
     todasAtividadesFaltantes = {}
     if len(dicionarioAtividadesFaltantes) == 0:
-        info("Todas as atividades de garrafas teste foram realizadas")
+        st.update("[bold green]Todas as atividades de garrafas teste foram realizadas][/]")
         for keyBanco, _ in dicionarioAtividadesGarrafasTeste.items():
             todasAtividadesFaltantes[keyBanco] = 1
     else:
@@ -69,7 +71,6 @@ def predicaoGT():
                 todasAtividadesFaltantes[keyBanco] = 0
             else:
                 todasAtividadesFaltantes[keyBanco] = 1
-
     (
         datagt,
         horagt,
@@ -77,80 +78,109 @@ def predicaoGT():
     ) = detectaVerificacaoTestes(path_imagemGTeste)
 
     dataHoraGarrafaTeste = f"20{datagt[-2:]}-{datagt[-4:-2]}-{datagt[:-4]} {horagt[:2]}:{horagt[2:4]}:00.000"
-    info("Prevendo os resultados e escrevendo nos bancos de dados !")
+    st.update("[bold green]Prevendo os resultados, enviando para IGS e salvando no SQLite![/]")
     resultadoFinal(
         path_ImagemProcessada,
         path_Modelo,
         dataHoraGarrafaTeste,
         garrafasProcessadasUltimoTeste,
         todasAtividadesFaltantes,
+        st,
+        console,
     )
 
 
-def coleta():
+def coleta(modo="Producao"):
+
+    with console.status(f"[bold green]Programa executando em {modo} Producao![/]"):
+        time.sleep(1)
     try:
-        os.system("cls" if os.name == "nt" else "clear")
-        os_cmd = 'tasklist /fi "imagename eq javaw.exe" /fo csv 2>NUL | find /I "javaw.exe">NUL'
+        start = time.time()
+        with console.status("[bold green]Verificando se pilot esta aberto!]/]"):
+            os.system("cls" if os.name == "nt" else "clear")
+            os_cmd = 'tasklist /fi "imagename eq javaw.exe" /fo csv 2>NUL | find /I "javaw.exe">NUL'
 
         if os.system(os_cmd) != 0:
-            info("Abrindo Pilot !")
-            pyautogui.hotkey("win", "1")
-            time.sleep(5)
+            with console.status("[bold green]Abrindo Pilot![/]"):
+                # info("Abrindo Pilot !")
+                pyautogui.hotkey("win", "1")
+                time.sleep(5)
 
-            uip()
+            with console.status("[bold green]Abrindo Pilot![/]") as st:
+                uip(console, st)
 
-            tela_login_uip(tecla_login, passw)
+            with console.status("[bold green]fazendo login![/]"):
+                tela_login_uip(tecla_login, passw, console)
 
-            popup()
+            with console.status("[bold green]Verificando Popup aberto![/]"):
+                popup(console)
 
-            tela_contador()
+            with console.status("[bold green]Acessando tela contadores![/]"):
+                tela_contador(console)
 
-            info("Capturando a tela Contadores!")
-            captura(path_imagemOriginal)
+            with console.status("[bold green]Capturando tela contadores![/]") as st:
+                # info("Capturando a tela Contadores!")
+                captura(path_imagemOriginal, console, st)
 
-            tela_info()
+            with console.status("[bold green]Voltando para tela principal![/]"):
+                tela_info(console)
 
-            tela_gteste()
+            with console.status("[bold green]Acessando tela Historico garrafa teste![/]"):
+                tela_gteste(console)
 
-            info("Capturando a tela Garrafa Teste!")
-            captura(path_imagemGTeste)
+            with console.status("[bold green]Capturando tela garrafa teste![/]") as st:
+                # info("Capturando a tela Garrafa Teste!")
+                captura(path_imagemGTeste, console, st)
 
-            info("Realizando as tratativas e recortes na imagem original!")
-            tratar(path_ImagemProcessada, path_imagemOriginal)
-            predicaoGT()
+            with console.status("[bold green]Realizando tratativas na imagem![/]"):
+                # info("Realizando as tratativas e recortes na imagem original!")
+                tratar(path_ImagemProcessada, path_imagemOriginal)
+            with console.status("[bold green]Prevendo valors garrafa teste![/]") as st:
+                predicaoGT(console, st)
 
-            tela_info()
+            with console.status("[bold green]Voltando para tela principal![/]"):
+                tela_info(console)
 
         else:
-            info("Programa esta Aberto!")
+            with console.status("[bold green]Pilot Aberto![/]"):
+                # info("Programa esta Aberto!")
+                pass
+            with console.status("[bold green]Verificando Popup aberto![/]"):
+                popup(console)
 
-            popup()
+            with console.status("[bold green]Acessando tela contadores![/]"):
+                tela_contador(console)
 
-            tela_contador()
+            with console.status("[bold green]Capturando tela contadores![/]") as st:
+                # info("Capturando a tela Contadores!")
+                captura(path_imagemOriginal, console, st)
 
-            info("Capturando a tela Contadores!")
-            captura(path_imagemOriginal)
+            with console.status("[bold green]Voltando para tela principal![/]"):
+                tela_info(console)
 
-            tela_info()
+            with console.status("[bold green]Acessando tela Historico garrafa teste![/]"):
+                tela_gteste(console)
 
-            tela_gteste()
+            with console.status("[bold green]Capturando tela garrafa teste![/]") as st:
+                # info("Capturando a tela Garrafa Teste!")
+                captura(path_imagemGTeste, console, st)
 
-            info("Capturando a tela Garrafa Teste!")
-            captura(path_imagemGTeste)
+            with console.status("[bold green]Realizando tratativas na imagem![/]"):
+                # info("Realizando as tratativas e recortes na imagem original!")
+                tratar(path_ImagemProcessada, path_imagemOriginal)
+            with console.status("[bold green]Prevendo valors garrafa teste![/]") as st:
+                predicaoGT(console, st)
+            with console.status("[bold green]Voltando para tela principal![/]"):
+                tela_info(console)
 
-            info("Realizando as tratativas e recortes na imagem original!")
-            tratar(path_ImagemProcessada, path_imagemOriginal)
-            predicaoGT()
-
-            tela_info()
-
+        final = time.time()
+        console.print(f"[bold red]Tempo de execução: [bold green]{round(final - start,2)}[/] segundos")
     except BaseException as err:
         logging.error(f"{err}")
         os.system("taskkill /im javaw.exe")
-        warging(f"Erro ao iniciar rotina {err}")
-        error("Pilot foi fechado!")
-        raise
+        console.log(f"[bold red]Erro ao iniciar rotina {err}[/]")
+        console.log("[bold red]Pilot foi fechado![/]")
 
 
 if __name__ == "__main__":
-    coleta()
+    coleta("[bold red]Dev[/]")

@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from ..services.escritaDados import escreveSQL, printaResultados  # escreveIGS
-from ..utils.bcolors import succes
 from .predicaoRf import carregaModelo, predicao
 
 # from src.igs import *
@@ -13,6 +12,8 @@ def resultadoFinal(
     dataHoraGarrafaTeste,
     garrafasProcessadasUltimoTeste,
     todasAtividadesFaltantes,
+    st,
+    console,
 ):
     """
     Função que recebe as informações e consolida todas elas, salvando as
@@ -41,22 +42,22 @@ def resultadoFinal(
     ]
     resultadosFinais = [int(x) for x in resultadosFinais]
 
-    succes("Predição dos dados realizada!")
+    st.update("[bold green]Predição dos dados realizada![/]")
 
     # variaveis de data e hora
     DataHora = datetime.now()
 
     # Porcentagem dos números
     # Porcentagens dos números
-    porcentagemProcessados = 100
-    porcentagemProduzidos = 0 if int(num_prod) == 0 else round((int(num_prod) / int(num_proc)) * 100, 2)
-    porcentagemExpulsos = 0 if int(num_exp) == 0 else round((int(num_exp) / int(num_proc)) * 100, 2)
-    porcentagemDelta01 = 0 if int(num_err_ech) == 0 else round((int(num_err_ech) / int(num_proc)) * 100, 2)
-    porcentagemDelta02 = 0 if int(num_err_cap) == 0 else round((int(num_err_cap) / int(num_proc)) * 100, 2)
-    porcentagemBoca = 0 if int(num_err_rot) == 0 else round((int(num_err_rot) / int(num_proc)) * 100, 2)
-    porcentagemParede = 0 if int(num_ams_ech) == 0 else round((int(num_ams_ech) / int(num_proc)) * 100, 2)
-    porcentagemFundo = 0 if int(num_ams_cap) == 0 else round((int(num_ams_cap) / int(num_proc)) * 100, 2)
-    porcentagemResidual = 0 if int(num_ams_rec) == 0 else round((int(num_ams_rec) / int(num_proc)) * 100, 2)
+    porcentagemProcessados = 0 if int(num_proc) == 0 else 100
+    porcentagemProduzidos = 0 if int(num_proc) == 0 else round((int(num_prod) / int(num_proc)) * 100, 2)
+    porcentagemExpulsos = 0 if int(num_proc) == 0 else round((int(num_exp) / int(num_proc)) * 100, 2)
+    porcentagemDelta01 = 0 if int(num_proc) == 0 else round((int(num_err_ech) / int(num_proc)) * 100, 2)
+    porcentagemDelta02 = 0 if int(num_proc) == 0 else round((int(num_err_cap) / int(num_proc)) * 100, 2)
+    porcentagemBoca = 0 if int(num_proc) == 0 else round((int(num_err_rot) / int(num_proc)) * 100, 2)
+    porcentagemParede = 0 if int(num_proc) == 0 else round((int(num_ams_ech) / int(num_proc)) * 100, 2)
+    porcentagemFundo = 0 if int(num_proc) == 0 else round((int(num_ams_cap) / int(num_proc)) * 100, 2)
+    porcentagemResidual = 0 if int(num_proc) == 0 else round((int(num_ams_rec) / int(num_proc)) * 100, 2)
 
     # Lista de colunas
     colunasSQL = [
@@ -111,15 +112,15 @@ def resultadoFinal(
     ]
 
     # Printando resultados
-    printaResultados(colunasSQL, valoresPredicao)
+    printaResultados(colunasSQL, valoresPredicao, console)
 
     # Escrevendo dados no IGS
-    # escreveIGS(valoresPredicao)
+    # escreveIGS(valoresPredicao,st)
 
     # Escrevendo os dados no SQLite
     # if DataHora.minute == 0:
-    #     escreveSQL(colunasSQL, valoresPredicao)
-    escreveSQL(colunasSQL, valoresPredicao)
+    #     escreveSQL(colunasSQL, valoresPredicao,st)
+    escreveSQL(colunasSQL, valoresPredicao, st,console)
 
 
 def numerosOitoCaixas(caminhoImagemProcessada, modelo):

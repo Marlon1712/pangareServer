@@ -2,7 +2,11 @@ import sched
 import threading
 import time
 
+from rich.console import Console
+
 from src.main import coleta
+
+console = Console()
 
 # from web_server import webserver
 
@@ -48,5 +52,9 @@ def main():
         time.sleep(1)
 
 
+dev = False
 if __name__ == "__main__":
-    main()
+    if dev is True:
+        coleta("[bold red]Dev[/]")
+    else:
+        main()

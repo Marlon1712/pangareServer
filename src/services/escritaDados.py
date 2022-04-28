@@ -1,13 +1,10 @@
-from rich import print
-from src.utils.bcolors import error, succes
-
 from .banco import Banco
 from .igs import IGS
 
 # import logging
 
 
-def escreveSQL(prefixo, listaResultados):
+def escreveSQL(prefixo, listaResultados, st, console):
     """
     Função criada para escrever os resultados do inspetor no banco de dados
     local da cervejaria uberlândia.\n
@@ -87,16 +84,16 @@ def escreveSQL(prefixo, listaResultados):
     try:
         banco.insert(inputCDicionario)
         bancoGfT.insert(inputGftDicionario)
-        succes("Dados escritos na tabela do SQLite!")
+        st.update("[bold green]Dados escritos na tabela do SQLite![/]")
     except BaseException as err:
-        error(f"Unexpected {err=}, {type(err)=}")
-        error("Falha ao salvar no banco")
+        console.log(f"[bold red]Unexpected {err=}, {type(err)=}[/]")
+        console.log("[bold red]Falha ao salvar no banco[/]")
 
 
 uip = IGS()
 
 
-def escreveIGS(resultados):
+def escreveIGS(resultados, st):
 
     uip.write("ns=2;s=L502_INSPETORES.UIP502001.DATA_COLETA;datatype=DateTime", resultados[0])
     uip.write(
@@ -142,20 +139,20 @@ def escreveIGS(resultados):
         resultados[7],
     )
 
-    succes("Dados enviados para o Servidor IGS!")
+    st.update("Dados enviados para o Servidor IGS![/]")
 
 
-def printaResultados(prefixo, listaResultados):
-    print(f"[blue bold]{'=' *18}[ Contadores ]{'=' *18}[/]")
+def printaResultados(prefixo, listaResultados, st):
+    st.print(f"[blue bold]{'=' *18}[ Contadores ]{'=' *18}[/]")
     for i, keyBanco in enumerate(prefixo):
         if keyBanco == "falhas_garrafa_teste":
             for key, valor in listaResultados[i].items():
-                print(f"[yellow][bold]{key}[/][/] : {'[green]OK[/]' if valor == 1 else '[red]NOK[/]'}")
+                st.print(f"[yellow][bold]{key}[/][/] : {'[green]OK[/]' if valor == 1 else '[red]NOK[/]'}")
         else:
             if keyBanco == "horario_garrafa_teste":
-                print(f"[blue bold]{'=' *17}[ Garrafa Teste ]{'=' *16}[/]")
-                print(f"[yellow][bold]{keyBanco}[/][/] : [green]{listaResultados[i]}[/]")
+                st.print(f"[blue bold]{'=' *17}[ Garrafa Teste ]{'=' *16}[/]")
+                st.print(f"[yellow][bold]{keyBanco}[/][/] : [green]{listaResultados[i]}[/]")
             else:
-                print(f"[yellow][bold]{keyBanco}[/][/] : [green]{listaResultados[i]}[/]")
+                st.print(f"[yellow][bold]{keyBanco}[/][/] : [green]{listaResultados[i]}[/]")
 
-    print(f"[blue bold]{'=' *50}[/]")
+    st.print(f"[blue bold]{'=' *50}[/]")
