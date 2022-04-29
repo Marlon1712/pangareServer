@@ -1,3 +1,5 @@
+import logging
+
 from .banco import Banco
 from .igs import IGS
 
@@ -88,60 +90,70 @@ def escreveSQL(prefixo, listaResultados, st, console):
         bancoGfT.insert(inputGftDicionario)
         st.update("[bold green]Dados escritos na tabela do SQLite![/]")
     except BaseException as err:
-        console.log(f"[bold red]Unexpected {err=}, {type(err)=}[/]")
+        logging.error(f"Unexpected {err=}, {type(err)=}")
         console.log("[bold red]Falha ao salvar no banco[/]")
 
 
 uip = IGS()
 
 
-def escreveIGS(resultados, st):
+def escreveIGS(resultados, console, st):
 
-    uip.write("ns=2;s=L502_INSPETORES.UIP502001.DATA_COLETA;datatype=DateTime", resultados[0])
-    uip.write(
-        "ns=2;s=L502_INSPETORES.UIP502001.PROCESSADA;datatype=Double",
-        int(resultados[2]),
-    )
-    uip.write("ns=2;s=L502_INSPETORES.UIP502001.PRODUZIDA;datatype=Double", int(resultados[4]))
-    uip.write("ns=2;s=L502_INSPETORES.UIP502001.EXPULSA;datatype=Double", int(resultados[6]))
-    uip.write("ns=2;s=L502_INSPETORES.UIP502001.BOCA;datatype=Double", int(resultados[12]))
-    uip.write("ns=2;s=L502_INSPETORES.UIP502001.PAREDE;datatype=Double", int(resultados[14]))
-    uip.write("ns=2;s=L502_INSPETORES.UIP502001.FUNDO;datatype=Double", int(resultados[16]))
-    uip.write("ns=2;s=L502_INSPETORES.UIP502001.RESIDUAL;datatype=Double", int(resultados[18]))
-    uip.write(
-        "ns=2;s=L502_INSPETORES.UIP502001.DATA_COLETA_TESTE;datatype=DateTime",
-        resultados[19],
-    )
-    uip.write(
-        "ns=2;s=L502_INSPETORES.UIP502001.RESULT_CHECK;datatype=Boolean",
-        (0 if sum([int(x) for x in resultados[19].values()]) <= 3 else 1),
-    )
-    uip.write(
-        "ns=2;s=L502_INSPETORES.UIP502001.CHECK_INSPECAO_BOCA;datatype=Boolean",
-        resultados[19]["Controlad_Embocadura"],
-    )
-    uip.write(
-        "ns=2;s=L502_INSPETORES.UIP502001.CHECK_INSPECAO_FUNDO;datatype=Boolean",
-        (0 if resultados[19]["Controlador_do_Fundo"] != 1 or resultados[19]["Cont_Fundo_Erro_Transp"] != 1 else 1),
-    )
-    uip.write(
-        "ns=2;s=L502_INSPETORES.UIP502001.CHECK_INSPECAO_PAREDE;datatype=Boolean",
-        (0 if resultados[19]["Paredes_laterais_entrada"] != 1 or resultados[19]["Paredes_laterais_saida"] != 1 else 1),
-    )
-    uip.write(
-        "ns=2;s=L502_INSPETORES.UIP502001.CHECK_INSPECAO_RESIDOS_LIQUIDOS;datatype=Boolean",
-        resultados[19]["Liquido_residual_IR"],
-    )
-    uip.write(
-        "ns=2;s=L502_INSPETORES.UIP502001.CHECK_INSPECAO_RESIDOS_CAUSTICOS;datatype=Boolean",
-        (0 if resultados[19]["Liquido_residual_HF_1"] != 1 or resultados[19]["Liquido_residual_HF_2"] != 1 else 1),
-    )
-    uip.write(
-        "ns=2;s=L502_INSPETORES.UIP502001.CHECK_INSPECAO_PORCENTO_REJEICAO;datatype=Double",
-        resultados[7],
-    )
+    try:
 
-    st.update("Dados enviados para o Servidor IGS![/]")
+        uip.write("ns=2;s=L502_INSPETORES.UIP502001.DATA_COLETA;datatype=DateTime", resultados[0])
+        uip.write(
+            "ns=2;s=L502_INSPETORES.UIP502001.PROCESSADA;datatype=Double",
+            int(resultados[2]),
+        )
+        uip.write("ns=2;s=L502_INSPETORES.UIP502001.PRODUZIDA;datatype=Double", int(resultados[4]))
+        uip.write("ns=2;s=L502_INSPETORES.UIP502001.EXPULSA;datatype=Double", int(resultados[6]))
+        uip.write("ns=2;s=L502_INSPETORES.UIP502001.BOCA;datatype=Double", int(resultados[12]))
+        uip.write("ns=2;s=L502_INSPETORES.UIP502001.PAREDE;datatype=Double", int(resultados[14]))
+        uip.write("ns=2;s=L502_INSPETORES.UIP502001.FUNDO;datatype=Double", int(resultados[16]))
+        uip.write("ns=2;s=L502_INSPETORES.UIP502001.RESIDUAL;datatype=Double", int(resultados[18]))
+        uip.write(
+            "ns=2;s=L502_INSPETORES.UIP502001.DATA_COLETA_TESTE;datatype=DateTime",
+            resultados[19],
+        )
+        uip.write(
+            "ns=2;s=L502_INSPETORES.UIP502001.RESULT_CHECK;datatype=Boolean",
+            (0 if sum([int(x) for x in resultados[20].values()]) <= 3 else 1),
+        )
+        uip.write(
+            "ns=2;s=L502_INSPETORES.UIP502001.CHECK_INSPECAO_BOCA;datatype=Boolean",
+            resultados[20]["Controlad_Embocadura"],
+        )
+        uip.write(
+            "ns=2;s=L502_INSPETORES.UIP502001.CHECK_INSPECAO_FUNDO;datatype=Boolean",
+            (0 if resultados[20]["Controlador_do_Fundo"] != 1 or resultados[20]["Cont_Fundo_Erro_Transp"] != 1 else 1),
+        )
+        uip.write(
+            "ns=2;s=L502_INSPETORES.UIP502001.CHECK_INSPECAO_PAREDE;datatype=Boolean",
+            (
+                0
+                if resultados[20]["Paredes_laterais_entrada"] != 1 or resultados[20]["Paredes_laterais_saida"] != 1
+                else 1
+            ),
+        )
+        uip.write(
+            "ns=2;s=L502_INSPETORES.UIP502001.CHECK_INSPECAO_RESIDOS_LIQUIDOS;datatype=Boolean",
+            resultados[20]["Liquido_residual_IR"],
+        )
+        uip.write(
+            "ns=2;s=L502_INSPETORES.UIP502001.CHECK_INSPECAO_RESIDOS_CAUSTICOS;datatype=Boolean",
+            (0 if resultados[20]["Liquido_residual_HF_1"] != 1 or resultados[20]["Liquido_residual_HF_2"] != 1 else 1),
+        )
+        uip.write(
+            "ns=2;s=L502_INSPETORES.UIP502001.CHECK_INSPECAO_PORCENTO_REJEICAO;datatype=Double",
+            resultados[7],
+        )
+
+        st.update("[bold green]Dados enviados para o Servidor IGS![/]")
+    except BaseException as err:
+        logging.error(f"Unexpected {err=}, {type(err)=}")
+        console.log("[bold red]Falha ao enviar dados para o Servidor IGS[/]")
+        raise
 
 
 def printaResultados(prefixo, listaResultados, st):

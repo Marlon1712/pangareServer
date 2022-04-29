@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from ..services.escritaDados import escreveSQL, printaResultados  # escreveIGS
+from ..services.escritaDados import escreveIGS, escreveSQL, printaResultados
 from .predicaoRf import carregaModelo, predicao
 
 # from src.igs import *
@@ -19,6 +19,7 @@ def resultadoFinal(
     Função que recebe as informações e consolida todas elas, salvando as
     predições em um csv e em um banco de dados e printa elas em sequencia
     """
+    st.update("[bold green]Prevendo valores contadores![/]")
     modelo = carregaModelo(caminhoModelo)
     num_proc, num_prod, num_exp = numerosOitoCaixas(caminhoImagemProcessada, modelo)
     (
@@ -111,16 +112,17 @@ def resultadoFinal(
         garrafasProcessadasUltimoTeste,
     ]
 
-    # Printando resultados
-    printaResultados(colunasSQL, valoresPredicao, console)
-
     # Escrevendo dados no IGS
-    # escreveIGS(valoresPredicao,st)
+    st.update("[bold green]Enviando Dados para IGS![/]")
+    escreveIGS(valoresPredicao, console, st)
 
     # Escrevendo os dados no SQLite
-    # if DataHora.minute == 0:
-    #     escreveSQL(colunasSQL, valoresPredicao,st)
+    st.update("[bold green]Salvando no SQLite![/]")
     escreveSQL(colunasSQL, valoresPredicao, st, console)
+
+    # Printando resultados
+    st.update("[bold green]Mostrando os resultados![/]")
+    printaResultados(colunasSQL, valoresPredicao, console)
 
 
 def numerosOitoCaixas(caminhoImagemProcessada, modelo):

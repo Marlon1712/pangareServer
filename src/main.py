@@ -32,6 +32,7 @@ passw = ["7", "5", "1", "1"]
 logging.basicConfig(
     filename=path_namelog,
     encoding="utf8",
+    filemode="w",
     level=logging.ERROR,
     format="%(asctime)s file: %(filename)s line: %(lineno)d %(levelname)s -> %(message)s",
     datefmt="%Y-%m-%d %I:%M %p",
@@ -78,7 +79,7 @@ def predicaoGT(console, st):
     ) = detectaVerificacaoTestes(path_imagemGTeste)
 
     dataHoraGarrafaTeste = f"20{datagt[-2:]}-{datagt[-4:-2]}-{datagt[:-4]} {horagt[:2]}:{horagt[2:4]}:00.000"
-    st.update("[bold green]Prevendo os resultados, enviando para IGS e salvando no SQLite![/]")
+    st.update("[bold green]Prevendo valores garrafa teste![/]")
     resultadoFinal(
         path_ImagemProcessada,
         path_Modelo,
@@ -102,7 +103,6 @@ def coleta(dev=False):
 
         if os.system(os_cmd) != 0:
             with console.status("[bold green]Abrindo Pilot![/]"):
-                # info("Abrindo Pilot !")
                 pyautogui.hotkey("win", "1")
                 time.sleep(5)
 
@@ -119,7 +119,6 @@ def coleta(dev=False):
                 tela_contador(console)
 
             with console.status("[bold green]Capturando tela contadores![/]") as st:
-                # info("Capturando a tela Contadores!")
                 captura(path_imagemOriginal, console, st)
 
             with console.status("[bold green]Voltando para tela principal![/]"):
@@ -129,19 +128,16 @@ def coleta(dev=False):
                 tela_gteste(console)
 
             with console.status("[bold green]Capturando tela garrafa teste![/]") as st:
-                # info("Capturando a tela Garrafa Teste!")
                 captura(path_imagemGTeste, console, st)
 
             with console.status("[bold green]Realizando tratativas na imagem![/]"):
-                # info("Realizando as tratativas e recortes na imagem original!")
                 tratar(path_ImagemProcessada, path_imagemOriginal)
-            with console.status("[bold green]Prevendo valors garrafa teste![/]") as st:
-                predicaoGT(console, st)
 
+            with console.status("[bold green]Realizando tratativas Print gft's![/]") as st:
+                predicaoGT(console, st)
             tela_info(console)
         else:
             with console.status("[bold green]Pilot Aberto![/]"):
-                # info("Programa esta Aberto!")
                 pass
             with console.status("[bold green]Verificando Popup aberto![/]"):
                 popup(console)
@@ -150,7 +146,6 @@ def coleta(dev=False):
                 tela_contador(console)
 
             with console.status("[bold green]Capturando tela contadores![/]") as st:
-                # info("Capturando a tela Contadores!")
                 captura(path_imagemOriginal, console, st)
 
             with console.status("[bold green]Voltando para tela principal![/]"):
@@ -160,21 +155,16 @@ def coleta(dev=False):
                 tela_gteste(console)
 
             with console.status("[bold green]Capturando tela garrafa teste![/]") as st:
-                # info("Capturando a tela Garrafa Teste!")
                 captura(path_imagemGTeste, console, st)
-
             with console.status("[bold green]Realizando tratativas na imagem![/]"):
-                # info("Realizando as tratativas e recortes na imagem original!")
                 tratar(path_ImagemProcessada, path_imagemOriginal)
-            with console.status("[bold green]Prevendo valors garrafa teste![/]") as st:
+            with console.status("[bold green]Realizando tratativas Print gft's![/]") as st:
                 predicaoGT(console, st)
-
             tela_info(console)
     except BaseException as err:
         logging.error(f"{err}")
         os.system("taskkill /im javaw.exe")
-        console.log(f"[bold red]Erro ao iniciar rotina {err}[/]")
-        console.log("[bold red]Pilot foi fechado![/]")
+        console.log("[bold red]Erro ao iniciar rotina, pilot foi fechado![/]")
 
 
 if __name__ == "__main__":
