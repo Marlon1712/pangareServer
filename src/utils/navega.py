@@ -1,4 +1,6 @@
 import logging
+import os
+import time
 
 import pyautogui
 
@@ -6,20 +8,20 @@ pyautogui.PAUSE = 1
 pyautogui.FAILSAFE = False
 
 # diretorio comandos
-tela_home = "./src/img/comands/home.png"
-tecla_voltar = "./src/img/comands/voltar.png"
-tecla_voltar1 = "./src/img/comands/voltar1.png"
-tecla_voltar2 = "./src/img/comands/voltar2.png"
-tecla_fechar_popup = "./src/img/comands/popup.png"
-tecla_fechar_popup1 = "./src/img/comands/popup1.png"
-tecla_info = "./src/img/comands/info.png"
-tecla_contador = "./src/img/comands/tela_contador.png"
-tecla_grfTeste = "./src/img/comands/tela_garafa_teste.png"
-tecla_grfTeste1 = "./src/img/comands/tela_garafa_teste1.png"
-tecla_selct_uip = "./src/img/comands/inline.png"
-tecla_login = "./src/img/comands/login.png"
-tecla_login1 = "./src/img/comands/login1.png"
-tecla_login2 = "./src/img/comands/login2.png"
+tela_home = "C:/pangare/src/img/comands/home.png"
+tecla_voltar = "C:/pangare/src/img/comands/voltar.png"
+tecla_voltar1 = "C:/pangare/src/img/comands/voltar1.png"
+tecla_voltar2 = "C:/pangare/src/img/comands/voltar2.png"
+tecla_fechar_popup = "C:/pangare/src/img/comands/popup.png"
+tecla_fechar_popup1 = "C:/pangare/src/img/comands/popup1.png"
+tecla_info = "C:/pangare/src/img/comands/info.png"
+tecla_contador = "C:/pangare/src/img/comands/tela_contador.png"
+tecla_grfTeste = "C:/pangare/src/img/comands/tela_garafa_teste.png"
+tecla_grfTeste1 = "C:/pangare/src/img/comands/tela_garafa_teste1.png"
+tecla_selct_uip = "C:/pangare/src/img/comands/inline.png"
+tecla_login = "C:/pangare/src/img/comands/login.png"
+tecla_login1 = "C:/pangare/src/img/comands/login1.png"
+tecla_login2 = "C:/pangare/src/img/comands/login2.png"
 
 
 def verificaTela():
@@ -29,7 +31,7 @@ def verificaTela():
         else:
             return False
     except BaseException as err:
-        logging.error(err)
+        logging.error(f"[ERRO]{err}")
         raise
 
 
@@ -125,10 +127,10 @@ def tela_gteste():
         raise
 
 
-def tela_login_uip(user: str, passw: list):
+def tela_login_uip(user: str, passw: list, console):
 
     try:
-
+        inicio = time.time()
         while True:
             if pyautogui.locateOnScreen(tecla_login):
                 pyautogui.click(tecla_login)
@@ -146,6 +148,9 @@ def tela_login_uip(user: str, passw: list):
                 pyautogui.press(passw)
                 # raise Exception("Tela login nao localizada!")
                 break
+            fim = time.time()
+            if fim - inicio > 10:
+                raise ValueError("tela login nao localizado")
     except BaseException as err:
         logging.error(err)
         raise
@@ -155,7 +160,7 @@ def uip():
     """Clica na tecla para abrir tela do inspetor e executa o login
 
     Args:
-        user (str): "./src/img/comands/Comand_loginITF.png"
+        user (str): "C:/pangare/src/img/comands/Comand_loginITF.png"
         passw (list): ["7", "5", "1", "1"]
 
     Raises:

@@ -32,7 +32,7 @@ class Loader:
 
         # Pré-processamento para criar o modelo
         # Separação das imagens em dados e labels:
-        for _, imagePath in enumerate(imagePaths):
+        for (i, imagePath) in enumerate(imagePaths):
             # Como o caminho é organizado como /dataset/{label}/{image}.jpg:
             image = cv2.imread(imagePath)
             label = imagePath.split(os.path.sep)[-2]
@@ -51,7 +51,7 @@ class Loader:
         numeros = []
         displays = []
         # Separação em display e dados:
-        for _, imagePath in enumerate(imagePaths):
+        for (i, imagePath) in enumerate(imagePaths):
             # Como o caminho é organizado como /dataset/{display}/{image}.jpg:
             image = cv2.imread(imagePath)
             display = imagePath.split(os.path.sep)[-2]

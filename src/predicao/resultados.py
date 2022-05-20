@@ -2,16 +2,7 @@ from datetime import datetime
 
 from .predicaoRf import carregaModelo, predicao
 
-# from src.igs import *
-
-
-def resultadoFinal(
-    caminhoImagemProcessada,
-    caminhoModelo,
-    dataHoraGarrafaTeste,
-    garrafasProcessadasUltimoTeste,
-    todasAtividadesFaltantes,
-):
+def resultadoFinal(caminhoImagemProcessada,caminhoModelo):
     """
     Função que recebe as informações e consolida todas elas, salvando as
     predições em um csv e em um banco de dados e printa elas em sequencia
@@ -26,49 +17,44 @@ def resultadoFinal(
         rec_err_fundo,
         rec_err_residual,
     ) = numeroSeteCaixas(caminhoImagemProcessada, modelo)
-
+    
     # variaveis de data e hora
     DataHora = datetime.now()
 
     # Porcentagens dos números
-    porcentagemProcessados = 0 if num_proc == 0 else 100
-    porcentagemProduzidos = 0 if num_proc == 0 else round((num_prod / num_proc) * 100, 2)
-    porcentagemExpulsos = 0 if num_proc == 0 else round((num_exp / num_proc) * 100, 2)
-    porcentagemDelta01 = 0 if num_proc == 0 else round((rec_delta_A / num_proc) * 100, 2)
-    porcentagemDelta02 = 0 if num_proc == 0 else round((rec_delta_B / num_proc) * 100, 2)
-    porcentagemBoca = 0 if num_proc == 0 else round((rec_err_boca / num_proc) * 100, 2)
-    porcentagemParede = 0 if num_proc == 0 else round((rec_err_parede / num_proc) * 100, 2)
-    porcentagemFundo = 0 if num_proc == 0 else round((rec_err_fundo / num_proc) * 100, 2)
-    porcentagemResidual = 0 if num_proc == 0 else round((rec_err_residual / num_proc) * 100, 2)
+    porcentProcessados = 0 if num_proc == 0 else 100
+    porcentProduzidos = 0 if num_proc == 0 else round((num_prod / num_proc) * 100, 2)
+    porcentExpulsos = 0 if num_proc == 0 else round((num_exp / num_proc) * 100, 2)
+    porcentDelta01 = 0 if num_proc == 0 else round((rec_delta_A / num_proc) * 100, 2)
+    porcentDelta02 = 0 if num_proc == 0 else round((rec_delta_B / num_proc) * 100, 2)
+    porcentBoca = 0 if num_proc == 0 else round((rec_err_boca / num_proc) * 100, 2)
+    porcentParede = 0 if num_proc == 0 else round((rec_err_parede / num_proc) * 100, 2)
+    porcentFundo = 0 if num_proc == 0 else round((rec_err_fundo / num_proc) * 100, 2)
+    porcentResidual = 0 if num_proc == 0 else round((rec_err_residual / num_proc) * 100, 2)
 
-    # Lista de colunas
-    resultados = {
-        "DataHora": DataHora,
-        "processados": num_proc,
-        "porcentagem_processados": porcentagemProcessados,
-        "produzidos": num_prod,
-        "porcentagem_produzidos": porcentagemProduzidos,
-        "expulsos": num_exp,
-        "porcentagem_expulsos": porcentagemExpulsos,
-        "delta_01": rec_delta_A,
-        "porcentagem_delta_01": porcentagemDelta01,
-        "delta_02": rec_delta_B,
-        "porcentagem_delta_02": porcentagemDelta02,
-        "boca": rec_err_boca,
-        "porcentagem_boca": porcentagemBoca,
-        "parede": rec_err_parede,
-        "porcentagem_parede": porcentagemParede,
-        "fundo": rec_err_fundo,
-        "porcentagem_fundo": porcentagemFundo,
-        "residual": rec_err_residual,
-        "porcentagem_residual": porcentagemResidual,
-        "horario_garrafa_teste": datetime.strptime(dataHoraGarrafaTeste, "%Y-%m-%d %H:%M:%S.%f"),
-        "falhas_garrafa_teste": todasAtividadesFaltantes,
-        "recipientes_processados_garrafa_teste": garrafasProcessadasUltimoTeste,
+    resultado = {
+        'DataHora': DataHora.isoformat(),
+        'processados': num_proc,
+        'porcent_processados': porcentProcessados,
+        'produzidos': num_prod,
+        'porcent_produzidos': porcentProduzidos,
+        'expulsos': num_exp,
+        'porcent_expulsos': porcentExpulsos,
+        'delta_01': rec_delta_A,
+        'porcent_delta_01': porcentDelta01,
+        'delta_02': rec_delta_B,
+        'porcent_delta_02': porcentDelta02,
+        'boca': rec_err_boca,
+        'porcent_boca': porcentBoca,
+        'parede': rec_err_boca,
+        'porcent_parede': porcentParede,
+        'fundo': rec_err_fundo,
+        'porcent_fundo': porcentFundo,
+        'residual': rec_err_residual,
+        'porcent_residual': porcentResidual
     }
 
-    return resultados
-
+    return resultado
 
 def numerosOitoCaixas(caminhoImagemProcessada, modelo):
     """

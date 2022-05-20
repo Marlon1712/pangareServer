@@ -21,4 +21,3 @@ def captura(caminho_print: str):
 
     except BaseException as err:
         logging.error(err)
-        raise

@@ -3,7 +3,6 @@ __pycache__
 /tesseract
 /venv
 /data/*
-/logs/*
 .pytest_cache/
 **/__pycache__
 **.egg-info/
@@ -12,7 +11,7 @@ __pycache__
 **.swp
 **.swo
 **.DS_Store
-src/img/*
+src/img/processada/*
 *.sql
 t_tesseract.py
 
