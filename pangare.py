@@ -3,7 +3,6 @@ import logging
 import os
 import sys
 import time
-from datetime import datetime
 
 import pyautogui
 
@@ -90,22 +89,22 @@ def coleta():
 
     try:
 
-        # janela = os.system('tasklist /fi "imagename eq javaw.exe" /fo csv 2>NUL | find /I "javaw.exe">NUL')
-        # os.system("cls" if os.name == "nt" else "clear")
+        janela = os.system('tasklist /fi "imagename eq javaw.exe" /fo csv 2>NUL | find /I "javaw.exe">NUL')
+        os.system("cls" if os.name == "nt" else "clear")
 
-        # if janela != 0:
-        #     os.system("./pilot.lnk")
-        #     time.sleep(5)
-        #     uip()
-        #     time.sleep(2)
-        #     tela_login_uip(tecla_login, passw)
+        if janela != 0:
+            os.system("./pilot.lnk")
+            time.sleep(5)
+            uip()
+            time.sleep(2)
+            tela_login_uip(tecla_login, passw)
 
-        # popup()
-        # tela_contador()
-        # captura(path_imagemOriginal)
-        # tela_info()
-        # tela_gteste()
-        # captura(path_imagemGTeste)
+        popup()
+        tela_contador()
+        captura(path_imagemOriginal)
+        tela_info()
+        tela_gteste()
+        captura(path_imagemGTeste)
 
         tratar(path_ImagemProcessada, path_imagemOriginal)
         resultado = resultadoFinal(path_ImagemProcessada, path_Modelo)
@@ -116,7 +115,7 @@ def coleta():
         print(resultadojson)
     except BaseException as err:
         logging.error(f"{err}")
-        # os.system("taskkill /F /im javaw.exe")
+        os.system("taskkill /F /im javaw.exe")
 
 
 if __name__ == "__main__":

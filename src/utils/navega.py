@@ -1,5 +1,4 @@
 import logging
-import os
 import time
 
 import pyautogui
@@ -127,7 +126,7 @@ def tela_gteste():
         raise
 
 
-def tela_login_uip(user: str, passw: list, console):
+def tela_login_uip(user: str, passw: list):
 
     try:
         inicio = time.time()
