@@ -1,9 +1,6 @@
 import logging
-import os
 
 import pyautogui
-
-from .bcolors import info, warging
 
 pyautogui.PAUSE = 1
 pyautogui.FAILSAFE = False
@@ -25,19 +22,18 @@ tecla_login1 = "./src/img/comands/login1.png"
 tecla_login2 = "./src/img/comands/login2.png"
 
 
-def verificaTela(console):
+def verificaTela():
     try:
         if pyautogui.locateOnScreen(tela_home):
             return True
         else:
             return False
     except BaseException as err:
-        logging.error(f"[ERRO]{err}")
-        console.log(f"[bold red] {err=}")
+        logging.error(err)
         raise
 
 
-def voltar(console):
+def voltar():
     """Clique na tecla voltar
 
     Raises:
@@ -56,11 +52,10 @@ def voltar(console):
                     raise Exception("Tecla voltar nao localizada!")
     except BaseException as err:
         logging.error(err)
-        console.log(f"[bold red] {err=}")
         raise
 
 
-def popup(console):
+def popup():
     """Clica na tecla para fechar popup"""
     try:
         if pyautogui.locateOnScreen(tecla_fechar_popup):
@@ -70,12 +65,11 @@ def popup(console):
                 pyautogui.click(tecla_fechar_popup1)
 
     except BaseException as err:
-        logging.error(f"[WARN] {err}")
-        console.log(f"[bold red] {err=}")
+        logging.error(err)
         raise
 
 
-def tela_info(console):
+def tela_info():
     """Clica na tecla para abrir tela info
 
     Raises:
@@ -87,12 +81,11 @@ def tela_info(console):
         else:
             raise Exception("Tela info nao localizada!")
     except BaseException as err:
-        logging.error(f"[WARN] {err}")
-        console.log(f"[bold red] {err=}")
+        logging.error(err)
         raise
 
 
-def tela_contador(console):
+def tela_contador():
     """Clica na tecla para abrir tela contador de garrafas e executa a funcao
 
     Raises:
@@ -104,12 +97,11 @@ def tela_contador(console):
         else:
             raise Exception("Tela contador nao localizada!")
     except BaseException as err:
-        logging.error(f"[ERROR] {err}")
-        console.log(f"[bold red] {err=}")
+        logging.error(err)
         raise
 
 
-def tela_gteste(console):
+def tela_gteste():
     """Abre tela de teste de garrafas e executa a funcao
 
 
@@ -129,12 +121,11 @@ def tela_gteste(console):
             raise Exception("Tela garrafa teste nao localizada!")
 
     except BaseException as err:
-        logging.error(f"[ERRO] {err}")
-        console.log(f"[bold red] Erro ao obter resultado garrafa teste {err}[/]")
+        logging.error(err)
         raise
 
 
-def tela_login_uip(user: str, passw: list, console):
+def tela_login_uip(user: str, passw: list):
 
     try:
 
@@ -156,11 +147,11 @@ def tela_login_uip(user: str, passw: list, console):
                 # raise Exception("Tela login nao localizada!")
                 break
     except BaseException as err:
-        logging.error(f"[ERRO] Ao acessar tela login nao localizada {err}")
-        console.log(f"[bold red] {err=}")
+        logging.error(err)
+        raise
 
 
-def uip(console, status):
+def uip():
     """Clica na tecla para abrir tela do inspetor e executa o login
 
     Args:
@@ -173,10 +164,8 @@ def uip(console, status):
     try:
         if pyautogui.locateOnScreen(tecla_selct_uip):
             pyautogui.doubleClick(tecla_selct_uip)
-            status.update("[bold green]Tela da UIP aberta com sucesso![/]")
         else:
             raise Exception("Tela UIP nao localizada!")
     except BaseException as err:
-        logging.error(f"[ERRO] {err}")
-        console.log(f"[bold red] {err=}")
-        os.system("taskkill /im javaw.exe")
+        logging.error(err)
+        raise

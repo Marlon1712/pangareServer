@@ -1,11 +1,10 @@
+import logging
 import os
 
 import pyautogui
 
-from .bcolors import error, succes
 
-
-def captura(caminho_print: str, console,st):
+def captura(caminho_print: str):
     """Metodo para capturar a tela e salvar em um arquivo.
 
     Args:
@@ -20,6 +19,6 @@ def captura(caminho_print: str, console,st):
             pyautogui.screenshot(caminho_print, region=(0, 0, 1025, 762))
             x += 1
 
-        st.update("[bold green]Print capturado!")
     except BaseException as err:
-        console.log(f"[bold red]Unexpected {err=}, {type(err)=}[/]")
+        logging.error(err)
+        raise

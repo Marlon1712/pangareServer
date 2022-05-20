@@ -1,6 +1,5 @@
 from datetime import datetime
 
-from ..services.escritaDados import escreveIGS, escreveSQL, printaResultados
 from .predicaoRf import carregaModelo, predicao
 
 # from src.igs import *
@@ -12,14 +11,11 @@ def resultadoFinal(
     dataHoraGarrafaTeste,
     garrafasProcessadasUltimoTeste,
     todasAtividadesFaltantes,
-    st,
-    console,
 ):
     """
     Função que recebe as informações e consolida todas elas, salvando as
     predições em um csv e em um banco de dados e printa elas em sequencia
     """
-    st.update("[bold green]Prevendo valores contadores![/]")
     modelo = carregaModelo(caminhoModelo)
     num_proc, num_prod, num_exp = numerosOitoCaixas(caminhoImagemProcessada, modelo)
     (
@@ -30,99 +26,48 @@ def resultadoFinal(
         rec_err_fundo,
         rec_err_residual,
     ) = numeroSeteCaixas(caminhoImagemProcessada, modelo)
-    resultadosFinais = [
-        num_proc,
-        num_prod,
-        num_exp,
-        rec_delta_A,
-        rec_delta_B,
-        rec_err_boca,
-        rec_err_parede,
-        rec_err_fundo,
-        rec_err_residual,
-    ]
-    resultadosFinais = [int(x) for x in resultadosFinais]
-
-    st.update("[bold green]Predição dos dados realizada![/]")
 
     # variaveis de data e hora
     DataHora = datetime.now()
 
-    # Porcentagem dos números
     # Porcentagens dos números
-    porcentagemProcessados = 0 if int(num_proc) == 0 else 100
-    porcentagemProduzidos = 0 if int(num_proc) == 0 else round((int(num_prod) / int(num_proc)) * 100, 2)
-    porcentagemExpulsos = 0 if int(num_proc) == 0 else round((int(num_exp) / int(num_proc)) * 100, 2)
-    porcentagemDelta01 = 0 if int(num_proc) == 0 else round((int(rec_delta_A) / int(num_proc)) * 100, 2)
-    porcentagemDelta02 = 0 if int(num_proc) == 0 else round((int(rec_delta_B) / int(num_proc)) * 100, 2)
-    porcentagemBoca = 0 if int(num_proc) == 0 else round((int(rec_err_boca) / int(num_proc)) * 100, 2)
-    porcentagemParede = 0 if int(num_proc) == 0 else round((int(rec_err_boca) / int(num_proc)) * 100, 2)
-    porcentagemFundo = 0 if int(num_proc) == 0 else round((int(rec_err_fundo) / int(num_proc)) * 100, 2)
-    porcentagemResidual = 0 if int(num_proc) == 0 else round((int(rec_err_residual) / int(num_proc)) * 100, 2)
+    porcentagemProcessados = 0 if num_proc == 0 else 100
+    porcentagemProduzidos = 0 if num_proc == 0 else round((num_prod / num_proc) * 100, 2)
+    porcentagemExpulsos = 0 if num_proc == 0 else round((num_exp / num_proc) * 100, 2)
+    porcentagemDelta01 = 0 if num_proc == 0 else round((rec_delta_A / num_proc) * 100, 2)
+    porcentagemDelta02 = 0 if num_proc == 0 else round((rec_delta_B / num_proc) * 100, 2)
+    porcentagemBoca = 0 if num_proc == 0 else round((rec_err_boca / num_proc) * 100, 2)
+    porcentagemParede = 0 if num_proc == 0 else round((rec_err_parede / num_proc) * 100, 2)
+    porcentagemFundo = 0 if num_proc == 0 else round((rec_err_fundo / num_proc) * 100, 2)
+    porcentagemResidual = 0 if num_proc == 0 else round((rec_err_residual / num_proc) * 100, 2)
 
     # Lista de colunas
-    colunasSQL = [
-        "DataHora",
-        "processados",
-        "porcentagem_processados",
-        "produzidos",
-        "porcentagem_produzidos",
-        "expulsos",
-        "porcentagem_expulsos",
-        "delta_01",
-        "porcentagem_delta_01",
-        "delta_02",
-        "porcentagem_delta_02",
-        "boca",
-        "porcentagem_boca",
-        "parede",
-        "porcentagem_parede",
-        "fundo",
-        "porcentagem_fundo",
-        "residual",
-        "porcentagem_residual",
-        "horario_garrafa_teste",
-        "falhas_garrafa_teste",
-        "recipientes_processados_garrafa_teste",
-    ]
+    resultados = {
+        "DataHora": DataHora,
+        "processados": num_proc,
+        "porcentagem_processados": porcentagemProcessados,
+        "produzidos": num_prod,
+        "porcentagem_produzidos": porcentagemProduzidos,
+        "expulsos": num_exp,
+        "porcentagem_expulsos": porcentagemExpulsos,
+        "delta_01": rec_delta_A,
+        "porcentagem_delta_01": porcentagemDelta01,
+        "delta_02": rec_delta_B,
+        "porcentagem_delta_02": porcentagemDelta02,
+        "boca": rec_err_boca,
+        "porcentagem_boca": porcentagemBoca,
+        "parede": rec_err_parede,
+        "porcentagem_parede": porcentagemParede,
+        "fundo": rec_err_fundo,
+        "porcentagem_fundo": porcentagemFundo,
+        "residual": rec_err_residual,
+        "porcentagem_residual": porcentagemResidual,
+        "horario_garrafa_teste": datetime.strptime(dataHoraGarrafaTeste, "%Y-%m-%d %H:%M:%S.%f"),
+        "falhas_garrafa_teste": todasAtividadesFaltantes,
+        "recipientes_processados_garrafa_teste": garrafasProcessadasUltimoTeste,
+    }
 
-    # Nova Lista com todos os valores
-    valoresPredicao = [
-        DataHora,
-        num_proc,
-        porcentagemProcessados,
-        num_prod,
-        porcentagemProduzidos,
-        num_exp,
-        porcentagemExpulsos,
-        rec_delta_A,
-        porcentagemDelta01,
-        rec_delta_B,
-        porcentagemDelta02,
-        rec_err_boca,
-        porcentagemBoca,
-        rec_err_boca,
-        porcentagemParede,
-        rec_err_fundo,
-        porcentagemFundo,
-        rec_err_residual,
-        porcentagemResidual,
-        datetime.strptime(dataHoraGarrafaTeste, "%Y-%m-%d %H:%M:%S.%f"),
-        todasAtividadesFaltantes,
-        garrafasProcessadasUltimoTeste,
-    ]
-
-    # Escrevendo dados no IGS
-    st.update("[bold green]Enviando Dados para IGS![/]")
-    escreveIGS(valoresPredicao, console, st)
-
-    # Escrevendo os dados no SQLite
-    st.update("[bold green]Salvando no SQLite![/]")
-    escreveSQL(colunasSQL, valoresPredicao, st, console)
-
-    # Printando resultados
-    st.update("[bold green]Mostrando os resultados![/]")
-    printaResultados(colunasSQL, valoresPredicao, console)
+    return resultados
 
 
 def numerosOitoCaixas(caminhoImagemProcessada, modelo):
